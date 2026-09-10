@@ -2,14 +2,14 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   Activity,
+  GitPullRequestArrow,
   LayoutDashboard,
   ListChecks,
   LogOut,
   Menu,
-  MessageSquare,
+  MessageSquareText,
   PlugZap,
   ScrollText,
-  Scale,
   Settings,
   ShieldAlert,
   X,
@@ -20,10 +20,10 @@ import { ROLE_LABEL, useWorkspace } from "@/lib/workspace";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { to: "/app/ask", label: "Ask", icon: MessageSquare },
+  { to: "/app/ask", label: "Ask", icon: MessageSquareText },
   { to: "/app/overview", label: "Overview", icon: LayoutDashboard },
   { to: "/app/risks", label: "Risks", icon: ShieldAlert },
-  { to: "/app/decisions", label: "Decisions", icon: Scale },
+  { to: "/app/decisions", label: "Decisions", icon: GitPullRequestArrow },
   { to: "/app/actions", label: "Actions", icon: ListChecks },
   { to: "/app/connections", label: "Connections", icon: PlugZap },
   { to: "/app/audit", label: "Audit", icon: ScrollText },

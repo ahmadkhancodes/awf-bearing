@@ -44,7 +44,7 @@ export function EvidenceAccordion({
       >
         <span className="flex flex-wrap items-center gap-2 text-[12px] text-muted-foreground">
           <span className="font-medium text-foreground">
-            Sources &amp; evidence ({records.length})
+            Connections &amp; evidence ({records.length})
           </span>
           <span>Freshness: {freshness}</span>
           <Pill
