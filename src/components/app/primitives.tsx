@@ -55,9 +55,9 @@ export function KpiCard({ kpi }: { kpi: Kpi }) {
   const Icon =
     kpi.tone === "good" ? ArrowUpRight : kpi.tone === "bad" ? ArrowDownRight : ArrowRight;
   return (
-    <Card className="px-3.5 py-3">
+    <Card className="px-3 py-2.5">
       <p className="text-[12px] font-medium text-muted-foreground">{kpi.label}</p>
-      <p className="mt-1 text-[20px] font-semibold tracking-tight tabular-nums">{kpi.value}</p>
+      <p className="mt-0.5 text-[19px] font-semibold tracking-tight tabular-nums">{kpi.value}</p>
       {kpi.delta ? (
         <p
           className={cn(
@@ -88,7 +88,7 @@ export function PageHeader({
   actions?: ReactNode;
 }) {
   return (
-    <div className="flex flex-wrap items-start justify-between gap-3 border-b border-rule pb-4">
+    <div className="flex flex-wrap items-start justify-between gap-3 pb-2">
       <div>
         <h1 className="text-[19px] font-semibold tracking-tight">{title}</h1>
         {description ? (

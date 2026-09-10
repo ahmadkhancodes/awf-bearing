@@ -46,12 +46,12 @@
 
 :root {
   --background: oklch(100% 0 0);
-  --surface: oklch(98% 0.003 250);
+  --surface: oklch(98.5% 0.003 250);
   --card: oklch(100% 0 0);
   --foreground: oklch(17% 0.008 250);
-  --muted: oklch(96.8% 0.003 250);
+  --muted: oklch(97.2% 0.004 250);
   --muted-foreground: oklch(48% 0.012 250);
-  --rule: oklch(91.5% 0.005 250);
+  --rule: oklch(92.8% 0.005 250);
   --navy: oklch(34% 0.083 244);
   --navy-deep: oklch(24% 0.06 246);
   --on-navy: oklch(99% 0 0);

@@ -53,3 +53,12 @@ export function ProductLogo({
     </span>
   );
 }
+
+export function SidebarLogo({ className }: { className?: string }) {
+  return (
+    <span className={cn("inline-flex items-center gap-2.5 text-navy", className)}>
+      <AwfMark className="size-7" />
+      <span className="text-[17px] font-semibold leading-none">Bearing</span>
+    </span>
+  );
+}

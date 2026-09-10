@@ -39,12 +39,12 @@ export function AnswerChart({ spec, height = 260 }: { spec: ChartSpec; height?: 
 
   return (
     <figure className="rounded-lg border border-rule bg-card">
-      <figcaption className="border-b border-rule px-4 py-3">
+      <figcaption className="px-3.5 pb-1 pt-3">
         <p className="text-[13px] font-semibold text-foreground">{spec.title}</p>
         <p className="text-[12px] text-muted-foreground">{spec.description}</p>
       </figcaption>
       <div
-        className="px-2 py-3"
+        className="px-2 pb-2 pt-1"
         role="img"
         aria-label={`${spec.title}. ${spec.description}. ${spec.series
           .map((s) => s.name)

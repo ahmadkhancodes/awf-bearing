@@ -99,14 +99,14 @@ function OverviewPage() {
     {
       title: "Support desk data is stale",
       detail: "Last sync yesterday, 22:15.",
-      to: "/app/sources" as const,
-      cta: "Sources",
+      to: "/app/connections" as const,
+      cta: "Connections",
       tone: "neutral" as const,
     },
   ];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <PageHeader
         title="Overview"
         description={`${ORG.name} · 12-week business health · data as at ${FRESHNESS.lastSyncedAt}`}
@@ -119,10 +119,10 @@ function OverviewPage() {
         ))}
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[1fr_320px]">
-        <div className="space-y-4">
+      <div className="grid gap-3 xl:grid-cols-[1fr_300px]">
+        <div className="space-y-3">
           <AnswerChart spec={cashChart} height={240} />
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-3 lg:grid-cols-2">
             <AnswerChart spec={marginChart} height={220} />
             <AnswerChart spec={deliveryChart} height={220} />
           </div>
