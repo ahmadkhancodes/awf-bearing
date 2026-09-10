@@ -112,7 +112,7 @@ function Today() {
                     ) : (
                       <Link
                         to="/app/risks"
-                        hash={s.riskId}
+                        hash={s.riskId ?? ""}
                         className="label-mono inline-flex min-h-11 items-center border border-rule px-3 hover:border-navy hover:bg-muted"
                       >
                         View risk
@@ -196,7 +196,7 @@ function Trend({
   values: number[];
   last: string;
   delta: string;
-  invert?: boolean;
+  invert?: boolean | undefined;
 }) {
   return (
     <div className="bg-card p-4">

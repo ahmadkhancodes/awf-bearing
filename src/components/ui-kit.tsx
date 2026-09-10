@@ -91,7 +91,7 @@ export function Sparkline({
 }: {
   values: number[];
   label: string;
-  invert?: boolean;
+  invert?: boolean | undefined;
 }) {
   const min = Math.min(...values);
   const max = Math.max(...values);

@@ -86,9 +86,9 @@ function RequestAccess() {
               setDone(true);
             }}
           >
-            <Field name="name" label="Full name" error={errors.name} autoComplete="name" />
-            <Field name="email" label="Work email" type="email" error={errors.email} autoComplete="email" />
-            <Field name="company" label="Company" error={errors.company} autoComplete="organization" />
+            <Field name="name" label="Full name" error={errors["name"]} autoComplete="name" />
+            <Field name="email" label="Work email" type="email" error={errors["email"]} autoComplete="email" />
+            <Field name="company" label="Company" error={errors["company"]} autoComplete="organization" />
             <div>
               <label htmlFor="note" className="label-mono text-foreground">
                 What is hard to see today? (optional)
@@ -97,13 +97,13 @@ function RequestAccess() {
                 id="note"
                 name="note"
                 rows={4}
-                aria-invalid={Boolean(errors.note)}
-                aria-describedby={errors.note ? "note-error" : undefined}
+                aria-invalid={Boolean(errors["note"])}
+                aria-describedby={errors["note"] ? "note-error" : undefined}
                 className="mt-2 w-full border border-rule bg-background px-3 py-2 text-[15px] outline-none focus-visible:border-navy"
               />
-              {errors.note ? (
+              {errors["note"] ? (
                 <p id="note-error" className="mt-1 text-[14px] text-critical">
-                  {errors.note}
+                  {errors["note"]}
                 </p>
               ) : null}
             </div>
@@ -132,7 +132,7 @@ function Field({
 }: {
   name: string;
   label: string;
-  error?: string;
+  error?: string | undefined;
   type?: string;
   autoComplete?: string;
 }) {
