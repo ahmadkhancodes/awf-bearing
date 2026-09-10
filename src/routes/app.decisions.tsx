@@ -1,8 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ConfidenceMeter, MonoLabel, Panel, SectionHeading, StatePill } from "@/components/ui-kit";
-import { EvidenceButton } from "@/components/evidence-drawer";
+import { EvidenceAccordion } from "@/components/app/evidence";
+import { Btn, Card, EmptyState, PageHeader, Pill } from "@/components/app/primitives";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { FRESHNESS } from "@/lib/demo-data";
 import type { Decision } from "@/lib/demo-data";
 import { ROLE_RIGHTS, useWorkspace } from "@/lib/workspace";
 import { cn } from "@/lib/utils";
@@ -11,219 +13,205 @@ export const Route = createFileRoute("/app/decisions")({
   head: () => ({
     meta: [{ title: "Decisions — Bearing" }, { name: "robots", content: "noindex,nofollow" }],
   }),
-  component: Decisions,
+  component: DecisionsPage,
 });
 
-const statusTone = (s: Decision["status"]) =>
-  s === "awaiting"
-    ? "caution"
-    : s === "approved"
-      ? "positive"
-      : s === "deferred"
-        ? "neutral"
-        : "signal";
+const statusTone = {
+  awaiting: "caution",
+  approved: "positive",
+  deferred: "neutral",
+  clarification: "signal",
+} as const;
 
-const statusLabel: Record<Decision["status"], string> = {
-  awaiting: "Awaiting decision",
+const statusLabel = {
+  awaiting: "Awaiting you",
   approved: "Approved",
   deferred: "Deferred",
   clarification: "Clarification requested",
-};
+} as const;
 
-function Decisions() {
-  const { decisions, session, setDecisionStatus } = useWorkspace();
-  const rights = session
-    ? ROLE_RIGHTS[session.role]
-    : { approve: false, assign: false, admin: false };
+const FILTERS = ["All", "Awaiting", "Resolved"] as const;
 
-  return (
-    <div>
-      <SectionHeading
-        eyebrow="Decisions"
-        title="What needs your judgement"
-        description="Each brief states why the decision is required now, the options and their trade-offs, the recommended course, and what it costs to wait. Bearing recommends; you decide."
-      />
+function DecisionsPage() {
+  const { decisions, setDecisionStatus, session } = useWorkspace();
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]>("Awaiting");
+  const [query, setQuery] = useState("");
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [option, setOption] = useState<string | null>(null);
 
-      {!rights.approve ? (
-        <p className="mt-6 border border-rule bg-muted px-4 py-3 text-[15px]">
-          Your role can review evidence and contribute, but cannot approve or defer decisions. The
-          approval controls below are disabled for that reason.
-        </p>
-      ) : null}
+  const canApprove = session ? ROLE_RIGHTS[session.role].approve : false;
+  const rows = decisions
+    .filter((d) =>
+      filter === "Awaiting"
+        ? d.status === "awaiting"
+        : filter === "Resolved"
+          ? d.status !== "awaiting"
+          : true,
+    )
+    .filter((d) => (d.statement + d.owner).toLowerCase().includes(query.toLowerCase()));
 
-      <ul className="mt-8 space-y-6">
-        {decisions.map((d) => (
-          <DecisionCard
-            key={d.id}
-            decision={d}
-            canApprove={rights.approve}
-            onSet={setDecisionStatus}
-          />
-        ))}
-      </ul>
-    </div>
-  );
-}
+  const selected = decisions.find((d) => d.id === openId) ?? null;
 
-function DecisionCard({
-  decision: d,
-  canApprove,
-  onSet,
-}: {
-  decision: Decision;
-  canApprove: boolean;
-  onSet: (id: string, status: Decision["status"], optionLabel?: string) => void;
-}) {
-  const [selected, setSelected] = useState(
-    d.options.find((o) => o.recommended)?.id ?? d.options[0]?.id ?? "",
-  );
-  const option = d.options.find((o) => o.id === selected);
-  const settled = d.status !== "awaiting";
-
-  const act = (status: Decision["status"], message: string) => {
-    onSet(d.id, status, option?.label);
-    toast.success(message, { description: "Recorded in Trust & Audit." });
+  const act = (d: Decision, status: Decision["status"], label: string) => {
+    if (!canApprove) {
+      toast.error("Your role cannot resolve decisions.", {
+        description: "Only an Executive can approve, defer or request clarification.",
+      });
+      return;
+    }
+    const chosen = d.options.find((o) => o.id === option)?.label;
+    setDecisionStatus(d.id, status, chosen);
+    toast.success(`${label} · written to the audit trail`);
   };
 
   return (
-    <Panel as="li">
-      <div
-        id={d.id}
-        className="scroll-mt-32 flex flex-wrap items-center gap-2 border-b border-rule bg-muted px-4 py-2.5 sm:px-5"
-      >
-        <StatePill tone={statusTone(d.status)}>{statusLabel[d.status]}</StatePill>
-        <MonoLabel>{d.domain}</MonoLabel>
-        <span className="label-mono text-foreground ml-auto">Due {d.deadline.toLowerCase()}</span>
+    <div className="space-y-4">
+      <PageHeader
+        title="Decisions"
+        description={`Executive decision queue · data as at ${FRESHNESS.lastSyncedAt}`}
+        actions={<Pill tone="signal">Demo workspace · Fictional data</Pill>}
+      />
+
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="flex rounded-md border border-rule bg-card p-0.5">
+          {FILTERS.map((f) => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFilter(f)}
+              className={cn(
+                "h-8 rounded px-2.5 text-[12.5px] font-medium transition-colors",
+                filter === f ? "bg-signal-soft text-navy" : "text-muted-foreground hover:bg-muted",
+              )}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search decisions"
+          aria-label="Search decisions"
+          className="h-9 w-full max-w-[240px] rounded-md border border-rule bg-card px-3 text-[13px] outline-none focus:border-signal"
+        />
       </div>
 
-      <div className="px-4 py-5 sm:px-5">
-        <h2 className="text-xl font-semibold sm:text-2xl">{d.statement}</h2>
-
-        <dl className="mt-5 grid gap-4 sm:grid-cols-2">
-          <div>
-            <dt className="label-mono text-muted-foreground">Why now</dt>
-            <dd className="mt-1 text-[15px]">{d.whyNow}</dd>
-          </div>
-          <div>
-            <dt className="label-mono text-muted-foreground">Context</dt>
-            <dd className="mt-1 text-[15px]">{d.context}</dd>
-          </div>
-        </dl>
-
-        <fieldset className="mt-6">
-          <legend className="label-mono text-foreground">Options</legend>
-          <div className="mt-3 grid gap-px border border-rule bg-rule">
-            {d.options.map((o) => (
-              <label
-                key={o.id}
-                className={cn(
-                  "cursor-pointer bg-card p-4 transition-colors hover:bg-muted has-[:checked]:bg-muted",
-                  settled && "cursor-default",
-                )}
+      {rows.length === 0 ? (
+        <EmptyState
+          title="Nothing in this view"
+          detail="No decision matches the current filter or search."
+        />
+      ) : (
+        <ul className="grid gap-2">
+          {rows.map((d) => (
+            <Card as="li" key={d.id} className="p-0">
+              <button
+                type="button"
+                onClick={() => {
+                  setOpenId(d.id);
+                  setOption(d.options.find((o) => o.recommended)?.id ?? null);
+                }}
+                className="flex w-full flex-wrap items-center gap-3 px-4 py-3 text-left hover:bg-muted"
               >
-                <span className="flex items-start gap-3">
-                  <input
-                    type="radio"
-                    name={`opt-${d.id}`}
-                    checked={selected === o.id}
-                    disabled={settled}
-                    onChange={() => setSelected(o.id)}
-                    className="mt-1 size-4 accent-[var(--navy)]"
-                  />
-                  <span className="min-w-0">
-                    <span className="flex flex-wrap items-center gap-2">
-                      <span className="text-[16px] font-medium">{o.label}</span>
-                      {o.recommended ? <StatePill tone="signal">Recommended</StatePill> : null}
-                    </span>
-                    <span className="mt-1 block text-[15px] text-muted-foreground">{o.detail}</span>
-                    <span className="mt-2 block text-[14px]">
-                      <span className="label-mono text-muted-foreground mr-2">Trade-off</span>
-                      {o.tradeoff}
-                    </span>
-                    <span className="mt-1 block text-[14px]">
-                      <span className="label-mono text-muted-foreground mr-2">Expected impact</span>
-                      {o.expectedImpact}
-                    </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[14px] font-medium">{d.statement}</span>
+                  <span className="mt-0.5 block text-[12.5px] text-muted-foreground">
+                    {d.owner} · {d.deadline} · {d.id.toUpperCase()}
                   </span>
                 </span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
+                <Pill tone={statusTone[d.status]}>{statusLabel[d.status]}</Pill>
+              </button>
+            </Card>
+          ))}
+        </ul>
+      )}
 
-        <p className="mt-5 border-l-2 border-critical pl-3 text-[15px]">
-          <span className="label-mono text-muted-foreground mr-2">Cost of delay</span>
-          {d.costOfDelay}
-        </p>
+      <Sheet
+        open={!!selected}
+        onOpenChange={(o) => {
+          if (!o) setOpenId(null);
+        }}
+      >
+        <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-xl">
+          {selected ? (
+            <>
+              <SheetHeader className="text-left">
+                <SheetTitle className="text-[16px]">{selected.statement}</SheetTitle>
+              </SheetHeader>
+              <div className="space-y-4 px-4 pb-8">
+                <div className="flex flex-wrap gap-2">
+                  <Pill tone={statusTone[selected.status]}>{statusLabel[selected.status]}</Pill>
+                  <Pill tone="caution">{selected.deadline}</Pill>
+                  <Pill>{selected.owner}</Pill>
+                </div>
+                <p className="text-[13.5px] text-muted-foreground">{selected.context}</p>
+                <p className="text-[13.5px]">
+                  <span className="font-medium">Why now:</span> {selected.whyNow}
+                </p>
 
-        <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-rule pt-4">
-          <MonoLabel>Owner · {d.owner}</MonoLabel>
-          <ConfidenceMeter level={d.confidence} />
-          <div className="ml-auto flex flex-wrap gap-2">
-            <EvidenceButton ids={d.evidenceIds} relatedTo={d.statement} />
-            {d.riskId ? (
-              <Link
-                to="/app/risks"
-                hash={d.riskId}
-                className="label-mono inline-flex min-h-11 items-center border border-rule px-3 hover:border-navy hover:bg-muted"
-              >
-                Related risk
-              </Link>
-            ) : null}
-          </div>
-        </div>
+                <fieldset>
+                  <legend className="text-[12px] font-medium uppercase tracking-wide text-muted-foreground">
+                    Options
+                  </legend>
+                  <div className="mt-2 grid gap-2">
+                    {selected.options.map((o) => (
+                      <label
+                        key={o.id}
+                        className={cn(
+                          "cursor-pointer rounded-md border p-3 text-[13px]",
+                          option === o.id ? "border-signal bg-signal-soft" : "border-rule bg-card",
+                        )}
+                      >
+                        <span className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name="option"
+                            checked={option === o.id}
+                            onChange={() => setOption(o.id)}
+                            className="size-3.5 accent-[var(--navy)]"
+                          />
+                          <span className="font-medium">{o.label}</span>
+                          {o.recommended ? <Pill tone="positive">Recommended</Pill> : null}
+                        </span>
+                        <span className="mt-1 block text-muted-foreground">{o.detail}</span>
+                        <span className="mt-1 block text-[12.5px] text-muted-foreground">
+                          Trade-off: {o.tradeoff} · {o.expectedImpact}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
 
-        {settled ? (
-          <div className="mt-5 border border-rule bg-muted p-4">
-            <MonoLabel>Current state</MonoLabel>
-            <p className="mt-1 text-[15px]">
-              {statusLabel[d.status]}. An audit record was created.{" "}
-              {canApprove ? (
-                <button
-                  type="button"
-                  onClick={() => act("awaiting", "Decision reopened")}
-                  className="text-signal underline"
-                >
-                  Reopen
-                </button>
-              ) : null}
-            </p>
-          </div>
-        ) : (
-          <div className="mt-5 flex flex-wrap gap-2 border-t border-rule pt-4">
-            <button
-              type="button"
-              disabled={!canApprove}
-              onClick={() => act("approved", "Decision approved")}
-              className="label-mono min-h-11 border border-navy bg-navy px-4 text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Approve selected option
-            </button>
-            <button
-              type="button"
-              disabled={!canApprove}
-              onClick={() => act("deferred", "Decision deferred")}
-              className="label-mono min-h-11 border border-rule px-4 transition-colors hover:border-navy hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Defer
-            </button>
-            <button
-              type="button"
-              disabled={!canApprove}
-              onClick={() => act("clarification", "Clarification requested")}
-              className="label-mono min-h-11 border border-rule px-4 transition-colors hover:border-navy hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Request clarification
-            </button>
-            <Link
-              to="/app/actions"
-              className="label-mono inline-flex min-h-11 items-center border border-rule px-4 hover:border-navy hover:bg-muted"
-            >
-              Assign follow-through
-            </Link>
-          </div>
-        )}
-      </div>
-    </Panel>
+                <p className="text-[12.5px] text-muted-foreground">
+                  Cost of delay: {selected.costOfDelay}
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  <Btn variant="primary" onClick={() => act(selected, "approved", "Approved")}>
+                    Approve
+                  </Btn>
+                  <Btn onClick={() => act(selected, "deferred", "Deferred")}>Defer</Btn>
+                  <Btn onClick={() => act(selected, "clarification", "Clarification requested")}>
+                    Request clarification
+                  </Btn>
+                </div>
+                {!canApprove ? (
+                  <p className="text-[12.5px] text-caution">
+                    Your role is read-only for decisions. Sign in as an Executive to resolve them.
+                  </p>
+                ) : null}
+
+                <EvidenceAccordion
+                  ids={selected.evidenceIds}
+                  confidence={selected.confidence}
+                  freshness={FRESHNESS.lastSyncedAt}
+                />
+              </div>
+            </>
+          ) : null}
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 }
