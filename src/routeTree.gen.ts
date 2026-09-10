@@ -14,6 +14,7 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppActionsRouteImport } from './routes/app.actions'
+import { Route as AppAskRouteImport } from './routes/app.ask'
 import { Route as AppConnectionsRouteImport } from './routes/app.connections'
 import { Route as AppDecisionsRouteImport } from './routes/app.decisions'
 import { Route as AppRisksRouteImport } from './routes/app.risks'
@@ -44,6 +45,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
 const AppActionsRoute = AppActionsRouteImport.update({
   id: '/actions',
   path: '/actions',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAskRoute = AppAskRouteImport.update({
+  id: '/ask',
+  path: '/ask',
   getParentRoute: () => AppRoute,
 } as any)
 const AppConnectionsRoute = AppConnectionsRouteImport.update({
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/signin': typeof SigninRoute
   '/app/actions': typeof AppActionsRoute
+  '/app/ask': typeof AppAskRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
   '/app/risks': typeof AppRisksRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/signin': typeof SigninRoute
   '/app/actions': typeof AppActionsRoute
+  '/app/ask': typeof AppAskRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
   '/app/risks': typeof AppRisksRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/signin': typeof SigninRoute
   '/app/actions': typeof AppActionsRoute
+  '/app/ask': typeof AppAskRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
   '/app/risks': typeof AppRisksRoute
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/signin'
     | '/app/actions'
+    | '/app/ask'
     | '/app/connections'
     | '/app/decisions'
     | '/app/risks'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
     | '/'
     | '/signin'
     | '/app/actions'
+    | '/app/ask'
     | '/app/connections'
     | '/app/decisions'
     | '/app/risks'
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/signin'
     | '/app/actions'
+    | '/app/ask'
     | '/app/connections'
     | '/app/decisions'
     | '/app/risks'
@@ -200,6 +212,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppActionsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/ask': {
+      id: '/app/ask'
+      path: '/ask'
+      fullPath: '/app/ask'
+      preLoaderRoute: typeof AppAskRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/connections': {
       id: '/app/connections'
       path: '/connections'
@@ -247,6 +266,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppActionsRoute: typeof AppActionsRoute
+  AppAskRoute: typeof AppAskRoute
   AppConnectionsRoute: typeof AppConnectionsRoute
   AppDecisionsRoute: typeof AppDecisionsRoute
   AppRisksRoute: typeof AppRisksRoute
@@ -258,6 +278,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppActionsRoute: AppActionsRoute,
+  AppAskRoute: AppAskRoute,
   AppConnectionsRoute: AppConnectionsRoute,
   AppDecisionsRoute: AppDecisionsRoute,
   AppRisksRoute: AppRisksRoute,
