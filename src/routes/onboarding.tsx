@@ -58,16 +58,32 @@ function Onboarding() {
 
   const finish = () => {
     setGenerating(true);
-    signIn({ name: name.trim() || ORG.executive.name, role, priorities: picked, onboarded: true });
-    window.setTimeout(() => {
-      log(
-        "Briefing generated",
-        "Today briefing",
-        `Priorities: ${picked.join(", ") || "none selected"}.`,
-      );
-      void navigate({ to: "/app/today" });
-    }, 900);
+    const goToToday = () => {
+      try {
+        signIn({
+          name: name.trim() || ORG.executive.name,
+          role,
+          priorities: picked,
+          onboarded: true,
+        });
+        // Audit logging must never block completion of onboarding.
+        if (typeof log === "function") {
+          log(
+            "Briefing generated",
+            "Today briefing",
+            `Priorities: ${picked.join(", ") || "none selected"}.`,
+          );
+        }
+      } catch (err) {
+        console.error("Onboarding completion issue", err);
+      } finally {
+        setGenerating(false);
+        void navigate({ to: "/app/today" });
+      }
+    };
+    window.setTimeout(goToToday, 900);
   };
+
 
   return (
     <div className="min-h-dvh bg-background">
