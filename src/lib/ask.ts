@@ -36,7 +36,11 @@ export interface AskAnswer {
   kpis: Kpi[];
   chart?: ChartSpec;
   findings: string[];
-  nextAction?: { label: string; detail: string; to?: string };
+  nextAction?: {
+    label: string;
+    detail: string;
+    to?: "/app/decisions" | "/app/actions" | "/app/risks" | "/app/sources" | "/app/overview";
+  };
   table?: { columns: string[]; rows: string[][] };
   evidenceIds: string[];
   freshness: string;
