@@ -62,10 +62,6 @@ const deliveryChart: ChartSpec = {
   ],
 };
 
-export default function _unused() {
-  return null;
-}
-
 function OverviewPage() {
   const { decisions, actions } = useWorkspace();
   const awaiting = decisions.filter((d) => d.status === "awaiting");

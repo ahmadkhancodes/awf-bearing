@@ -17,6 +17,7 @@ import { Route as AppActionsRouteImport } from './routes/app.actions'
 import { Route as AppAskRouteImport } from './routes/app.ask'
 import { Route as AppConnectionsRouteImport } from './routes/app.connections'
 import { Route as AppDecisionsRouteImport } from './routes/app.decisions'
+import { Route as AppOverviewRouteImport } from './routes/app.overview'
 import { Route as AppRisksRouteImport } from './routes/app.risks'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppTodayRouteImport } from './routes/app.today'
@@ -62,6 +63,11 @@ const AppDecisionsRoute = AppDecisionsRouteImport.update({
   path: '/decisions',
   getParentRoute: () => AppRoute,
 } as any)
+const AppOverviewRoute = AppOverviewRouteImport.update({
+  id: '/overview',
+  path: '/overview',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRisksRoute = AppRisksRouteImport.update({
   id: '/risks',
   path: '/risks',
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/app/ask': typeof AppAskRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
+  '/app/overview': typeof AppOverviewRoute
   '/app/risks': typeof AppRisksRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/today': typeof AppTodayRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/app/ask': typeof AppAskRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
+  '/app/overview': typeof AppOverviewRoute
   '/app/risks': typeof AppRisksRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/today': typeof AppTodayRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/app/ask': typeof AppAskRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
+  '/app/overview': typeof AppOverviewRoute
   '/app/risks': typeof AppRisksRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/today': typeof AppTodayRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/app/ask'
     | '/app/connections'
     | '/app/decisions'
+    | '/app/overview'
     | '/app/risks'
     | '/app/settings'
     | '/app/today'
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/app/ask'
     | '/app/connections'
     | '/app/decisions'
+    | '/app/overview'
     | '/app/risks'
     | '/app/settings'
     | '/app/today'
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '/app/ask'
     | '/app/connections'
     | '/app/decisions'
+    | '/app/overview'
     | '/app/risks'
     | '/app/settings'
     | '/app/today'
@@ -233,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDecisionsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/overview': {
+      id: '/app/overview'
+      path: '/overview'
+      fullPath: '/app/overview'
+      preLoaderRoute: typeof AppOverviewRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/risks': {
       id: '/app/risks'
       path: '/risks'
@@ -269,6 +288,7 @@ interface AppRouteChildren {
   AppAskRoute: typeof AppAskRoute
   AppConnectionsRoute: typeof AppConnectionsRoute
   AppDecisionsRoute: typeof AppDecisionsRoute
+  AppOverviewRoute: typeof AppOverviewRoute
   AppRisksRoute: typeof AppRisksRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppTodayRoute: typeof AppTodayRoute
@@ -281,6 +301,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAskRoute: AppAskRoute,
   AppConnectionsRoute: AppConnectionsRoute,
   AppDecisionsRoute: AppDecisionsRoute,
+  AppOverviewRoute: AppOverviewRoute,
   AppRisksRoute: AppRisksRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppTodayRoute: AppTodayRoute,
