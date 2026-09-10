@@ -16,6 +16,8 @@ import { Route as RequestAccessRouteImport } from './routes/request-access'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppRisksRouteImport } from './routes/app.risks'
+import { Route as AppTodayRouteImport } from './routes/app.today'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +54,16 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppRisksRoute = AppRisksRouteImport.update({
+  id: '/risks',
+  path: '/risks',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTodayRoute = AppTodayRouteImport.update({
+  id: '/today',
+  path: '/today',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,6 +72,8 @@ export interface FileRoutesByFullPath {
   '/request-access': typeof RequestAccessRoute
   '/security': typeof SecurityRoute
   '/signin': typeof SigninRoute
+  '/app/risks': typeof AppRisksRoute
+  '/app/today': typeof AppTodayRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
@@ -68,6 +82,8 @@ export interface FileRoutesByTo {
   '/request-access': typeof RequestAccessRoute
   '/security': typeof SecurityRoute
   '/signin': typeof SigninRoute
+  '/app/risks': typeof AppRisksRoute
+  '/app/today': typeof AppTodayRoute
   '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -78,6 +94,8 @@ export interface FileRoutesById {
   '/request-access': typeof RequestAccessRoute
   '/security': typeof SecurityRoute
   '/signin': typeof SigninRoute
+  '/app/risks': typeof AppRisksRoute
+  '/app/today': typeof AppTodayRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
@@ -89,9 +107,19 @@ export interface FileRouteTypes {
     | '/request-access'
     | '/security'
     | '/signin'
+    | '/app/risks'
+    | '/app/today'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/onboarding' | '/request-access' | '/security' | '/signin' | '/app'
+  to:
+    | '/'
+    | '/onboarding'
+    | '/request-access'
+    | '/security'
+    | '/signin'
+    | '/app/risks'
+    | '/app/today'
+    | '/app'
   id:
     | '__root__'
     | '/'
@@ -100,6 +128,8 @@ export interface FileRouteTypes {
     | '/request-access'
     | '/security'
     | '/signin'
+    | '/app/risks'
+    | '/app/today'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
@@ -163,14 +193,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/risks': {
+      id: '/app/risks'
+      path: '/risks'
+      fullPath: '/app/risks'
+      preLoaderRoute: typeof AppRisksRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/today': {
+      id: '/app/today'
+      path: '/today'
+      fullPath: '/app/today'
+      preLoaderRoute: typeof AppTodayRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppRisksRoute: typeof AppRisksRoute
+  AppTodayRoute: typeof AppTodayRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppRisksRoute: AppRisksRoute,
+  AppTodayRoute: AppTodayRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
