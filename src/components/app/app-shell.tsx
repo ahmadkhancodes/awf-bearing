@@ -3,30 +3,32 @@ import { useEffect, useState, type ReactNode } from "react";
 import {
   Activity,
   ClipboardList,
-  Database,
-  Gauge,
+  LayoutDashboard,
   History,
+  ListChecks,
   LogOut,
   Menu,
   MessageSquare,
+  PlugZap,
+  ScrollText,
   Scale,
   Settings,
   ShieldAlert,
   X,
 } from "lucide-react";
-import { ProductLogo } from "@/components/brand";
+import { ProductLogo, SidebarLogo } from "@/components/brand";
 import { ORG } from "@/lib/demo-data";
 import { ROLE_LABEL, useWorkspace } from "@/lib/workspace";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/app/ask", label: "Ask", icon: MessageSquare },
-  { to: "/app/overview", label: "Overview", icon: Gauge },
+  { to: "/app/overview", label: "Overview", icon: LayoutDashboard },
   { to: "/app/risks", label: "Risks", icon: ShieldAlert },
   { to: "/app/decisions", label: "Decisions", icon: Scale },
-  { to: "/app/actions", label: "Actions", icon: ClipboardList },
-  { to: "/app/sources", label: "Sources", icon: Database },
-  { to: "/app/audit", label: "Audit", icon: History },
+  { to: "/app/actions", label: "Actions", icon: ListChecks },
+  { to: "/app/connections", label: "Connections", icon: PlugZap },
+  { to: "/app/audit", label: "Audit", icon: ScrollText },
   { to: "/app/settings", label: "Settings", icon: Settings },
 ] as const;
 
@@ -49,14 +51,14 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const sidebar = (
     <div className="flex h-full flex-col bg-card">
-      <div className="border-b border-rule px-4 py-3.5">
+      <div className="border-b border-rule px-3 py-3">
         <Link to="/app/ask" onClick={() => setOpen(false)} aria-label="Bearing — Ask">
-          <ProductLogo />
+          <SidebarLogo />
         </Link>
-        <div className="mt-3 rounded-md border border-rule bg-surface px-2.5 py-2">
+        <div className="mt-2.5 rounded-md bg-surface px-2.5 py-2">
           <p className="text-[11px] font-medium text-muted-foreground">Workspace</p>
-          <p className="truncate text-[13px] font-medium">{ORG.name}</p>
-          <p className="mt-0.5 text-[11px] text-signal">Demo workspace · Fictional data</p>
+          <p className="mt-0.5 text-[12.5px] font-medium leading-snug">{ORG.name}</p>
+          <p className="mt-1 text-[10.5px] text-muted-foreground">Demo workspace · Fictional data</p>
         </div>
       </div>
 
@@ -67,7 +69,8 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Link
                 to={n.to}
                 onClick={() => setOpen(false)}
-                className="flex h-9 items-center gap-2.5 rounded-md px-2.5 text-[13.5px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                preload="intent"
+                className="flex h-9 items-center gap-2.5 rounded-md px-2.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-navy"
                 activeProps={{ className: "bg-signal-soft text-navy" }}
               >
                 <n.icon className="size-4 shrink-0" aria-hidden="true" />
@@ -185,7 +188,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </span>
         </header>
 
-        <main id="main" className="mx-auto w-full max-w-[1280px] px-4 py-5 sm:px-6 sm:py-6">
+        <main id="main" className="mx-auto w-full max-w-[1320px] px-4 py-4 sm:px-6 sm:py-5">
           {children}
         </main>
       </div>

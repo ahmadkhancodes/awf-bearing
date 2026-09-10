@@ -6,7 +6,7 @@ import { Btn, Card, EmptyState, PageHeader, Pill } from "@/components/app/primit
 import { SOURCES, type SourceHealth } from "@/lib/analytics";
 import { useWorkspace } from "@/lib/workspace";
 
-export const Route = createFileRoute("/app/sources")({
+export const Route = createFileRoute("/app/connections")({
   head: () => ({
     meta: [{ title: "Sources — Bearing" }, { name: "robots", content: "noindex,nofollow" }],
   }),

@@ -39,7 +39,7 @@ export interface AskAnswer {
   nextAction?: {
     label: string;
     detail: string;
-    to?: "/app/decisions" | "/app/actions" | "/app/risks" | "/app/sources" | "/app/overview";
+    to?: "/app/decisions" | "/app/actions" | "/app/risks" | "/app/connections" | "/app/overview";
   };
   table?: { columns: string[]; rows: string[][] };
   evidenceIds: string[];
