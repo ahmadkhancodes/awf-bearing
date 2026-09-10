@@ -81,13 +81,13 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
 
   if (has(q, "decision", "waiting", "approve", "my desk")) {
     const awaiting = decisions.filter((d) => d.status === "awaiting");
+    const first = awaiting[0];
     return {
       ...base,
-      answer:
-        awaiting.length === 0
-          ? "No decisions are waiting for you. Everything raised has been approved, deferred, or sent back for clarification."
-          : `${awaiting.length} decisions are waiting for you. The most urgent is due ${awaiting[0].deadline.toLowerCase()}: ${awaiting[0].statement}`,
-      impact: awaiting.length ? `Earliest deadline: ${awaiting[0].deadline}.` : undefined,
+      answer: first
+        ? `${awaiting.length} decisions are waiting for you. The most urgent is due ${first.deadline.toLowerCase()}: ${first.statement}`
+        : "No decisions are waiting for you. Everything raised has been approved, deferred, or sent back for clarification.",
+      ...(first ? { impact: `Earliest deadline: ${first.deadline}.` } : {}),
       detail: awaiting.map((d) => `${d.deadline} · ${d.statement}`),
       evidenceIds: awaiting.flatMap((d) => d.evidenceIds).slice(0, 4),
       confidence: "high",
