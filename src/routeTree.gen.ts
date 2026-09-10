@@ -15,6 +15,7 @@ import { Route as SigninRouteImport } from './routes/signin'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppActionsRouteImport } from './routes/app.actions'
 import { Route as AppAskRouteImport } from './routes/app.ask'
+import { Route as AppAuditRouteImport } from './routes/app.audit'
 import { Route as AppConnectionsRouteImport } from './routes/app.connections'
 import { Route as AppDecisionsRouteImport } from './routes/app.decisions'
 import { Route as AppOverviewRouteImport } from './routes/app.overview'
@@ -52,6 +53,11 @@ const AppActionsRoute = AppActionsRouteImport.update({
 const AppAskRoute = AppAskRouteImport.update({
   id: '/ask',
   path: '/ask',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAuditRoute = AppAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
   getParentRoute: () => AppRoute,
 } as any)
 const AppConnectionsRoute = AppConnectionsRouteImport.update({
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
   '/app/actions': typeof AppActionsRoute
   '/app/ask': typeof AppAskRoute
+  '/app/audit': typeof AppAuditRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
   '/app/overview': typeof AppOverviewRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/signin': typeof SigninRoute
   '/app/actions': typeof AppActionsRoute
   '/app/ask': typeof AppAskRoute
+  '/app/audit': typeof AppAuditRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
   '/app/overview': typeof AppOverviewRoute
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/signin': typeof SigninRoute
   '/app/actions': typeof AppActionsRoute
   '/app/ask': typeof AppAskRoute
+  '/app/audit': typeof AppAuditRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
   '/app/overview': typeof AppOverviewRoute
@@ -151,6 +160,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/app/actions'
     | '/app/ask'
+    | '/app/audit'
     | '/app/connections'
     | '/app/decisions'
     | '/app/overview'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/app/actions'
     | '/app/ask'
+    | '/app/audit'
     | '/app/connections'
     | '/app/decisions'
     | '/app/overview'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/app/actions'
     | '/app/ask'
+    | '/app/audit'
     | '/app/connections'
     | '/app/decisions'
     | '/app/overview'
@@ -241,6 +253,13 @@ declare module '@tanstack/react-router' {
       path: '/ask'
       fullPath: '/app/ask'
       preLoaderRoute: typeof AppAskRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/audit': {
+      id: '/app/audit'
+      path: '/audit'
+      fullPath: '/app/audit'
+      preLoaderRoute: typeof AppAuditRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/connections': {
@@ -305,6 +324,7 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppActionsRoute: typeof AppActionsRoute
   AppAskRoute: typeof AppAskRoute
+  AppAuditRoute: typeof AppAuditRoute
   AppConnectionsRoute: typeof AppConnectionsRoute
   AppDecisionsRoute: typeof AppDecisionsRoute
   AppOverviewRoute: typeof AppOverviewRoute
@@ -319,6 +339,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppActionsRoute: AppActionsRoute,
   AppAskRoute: AppAskRoute,
+  AppAuditRoute: AppAuditRoute,
   AppConnectionsRoute: AppConnectionsRoute,
   AppDecisionsRoute: AppDecisionsRoute,
   AppOverviewRoute: AppOverviewRoute,
