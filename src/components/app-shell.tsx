@@ -25,10 +25,15 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { session, hydrated, signOut } = useWorkspace();
   const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
+  // Someone who signs out is returned to the public site, not pushed back
+  // through onboarding they have already completed.
+  const hadSession = useRef(false);
+  if (session) hadSession.current = true;
+  const exitTo = hadSession.current ? "/" : "/onboarding";
 
   useEffect(() => {
-    if (hydrated && !session) void navigate({ to: "/onboarding" });
-  }, [hydrated, session, navigate]);
+    if (hydrated && !session) void navigate({ to: exitTo, replace: true });
+  }, [hydrated, session, navigate, exitTo]);
 
   if (!hydrated) {
     return (
@@ -42,14 +47,15 @@ export function AppShell({ children }: { children: ReactNode }) {
     return (
       <div className="flex min-h-dvh items-center justify-center px-4 text-center">
         <p className="text-[15px] text-muted-foreground">
-          Redirecting to onboarding…{" "}
-          <Link to="/onboarding" className="text-signal underline">
+          {hadSession.current ? "Signing out…" : "Redirecting to onboarding…"}{" "}
+          <Link to={exitTo} className="text-signal underline">
             Continue
           </Link>
         </p>
       </div>
     );
   }
+
 
   const linkClass =
     "label-mono inline-flex min-h-11 items-center border-b-2 border-transparent px-1 text-foreground transition-colors hover:text-signal";
