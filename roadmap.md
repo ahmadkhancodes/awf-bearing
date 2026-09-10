@@ -17,4 +17,4 @@
 - [x] Improve route preloading and navigation performance
 - [x] Complete responsive, accessibility, interaction, and console QA
 - [x] Pass typecheck, lint, and production build
-- [ ] Publish and confirm live URL
+- [x] Publish and confirm live URL
