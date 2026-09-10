@@ -16,6 +16,8 @@ import { Route as RequestAccessRouteImport } from './routes/request-access'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppActionsRouteImport } from './routes/app.actions'
+import { Route as AppDecisionsRouteImport } from './routes/app.decisions'
 import { Route as AppRisksRouteImport } from './routes/app.risks'
 import { Route as AppTodayRouteImport } from './routes/app.today'
 
@@ -54,6 +56,16 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppActionsRoute = AppActionsRouteImport.update({
+  id: '/actions',
+  path: '/actions',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDecisionsRoute = AppDecisionsRouteImport.update({
+  id: '/decisions',
+  path: '/decisions',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRisksRoute = AppRisksRouteImport.update({
   id: '/risks',
   path: '/risks',
@@ -72,6 +84,8 @@ export interface FileRoutesByFullPath {
   '/request-access': typeof RequestAccessRoute
   '/security': typeof SecurityRoute
   '/signin': typeof SigninRoute
+  '/app/actions': typeof AppActionsRoute
+  '/app/decisions': typeof AppDecisionsRoute
   '/app/risks': typeof AppRisksRoute
   '/app/today': typeof AppTodayRoute
   '/app/': typeof AppIndexRoute
@@ -82,6 +96,8 @@ export interface FileRoutesByTo {
   '/request-access': typeof RequestAccessRoute
   '/security': typeof SecurityRoute
   '/signin': typeof SigninRoute
+  '/app/actions': typeof AppActionsRoute
+  '/app/decisions': typeof AppDecisionsRoute
   '/app/risks': typeof AppRisksRoute
   '/app/today': typeof AppTodayRoute
   '/app': typeof AppIndexRoute
@@ -94,6 +110,8 @@ export interface FileRoutesById {
   '/request-access': typeof RequestAccessRoute
   '/security': typeof SecurityRoute
   '/signin': typeof SigninRoute
+  '/app/actions': typeof AppActionsRoute
+  '/app/decisions': typeof AppDecisionsRoute
   '/app/risks': typeof AppRisksRoute
   '/app/today': typeof AppTodayRoute
   '/app/': typeof AppIndexRoute
@@ -107,6 +125,8 @@ export interface FileRouteTypes {
     | '/request-access'
     | '/security'
     | '/signin'
+    | '/app/actions'
+    | '/app/decisions'
     | '/app/risks'
     | '/app/today'
     | '/app/'
@@ -117,6 +137,8 @@ export interface FileRouteTypes {
     | '/request-access'
     | '/security'
     | '/signin'
+    | '/app/actions'
+    | '/app/decisions'
     | '/app/risks'
     | '/app/today'
     | '/app'
@@ -128,6 +150,8 @@ export interface FileRouteTypes {
     | '/request-access'
     | '/security'
     | '/signin'
+    | '/app/actions'
+    | '/app/decisions'
     | '/app/risks'
     | '/app/today'
     | '/app/'
@@ -193,6 +217,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/actions': {
+      id: '/app/actions'
+      path: '/actions'
+      fullPath: '/app/actions'
+      preLoaderRoute: typeof AppActionsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/decisions': {
+      id: '/app/decisions'
+      path: '/decisions'
+      fullPath: '/app/decisions'
+      preLoaderRoute: typeof AppDecisionsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/risks': {
       id: '/app/risks'
       path: '/risks'
@@ -211,12 +249,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppActionsRoute: typeof AppActionsRoute
+  AppDecisionsRoute: typeof AppDecisionsRoute
   AppRisksRoute: typeof AppRisksRoute
   AppTodayRoute: typeof AppTodayRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppActionsRoute: AppActionsRoute,
+  AppDecisionsRoute: AppDecisionsRoute,
   AppRisksRoute: AppRisksRoute,
   AppTodayRoute: AppTodayRoute,
   AppIndexRoute: AppIndexRoute,
