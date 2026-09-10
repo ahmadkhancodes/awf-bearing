@@ -56,7 +56,6 @@ export function AppShell({ children }: { children: ReactNode }) {
     );
   }
 
-
   const linkClass =
     "label-mono inline-flex min-h-11 items-center border-b-2 border-transparent px-1 text-foreground transition-colors hover:text-signal";
 
