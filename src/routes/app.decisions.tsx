@@ -65,7 +65,9 @@ function DecisionCard({
   canApprove: boolean;
   onSet: (id: string, status: Decision["status"], optionLabel?: string) => void;
 }) {
-  const [selected, setSelected] = useState(d.options.find((o) => o.recommended)?.id ?? d.options[0].id);
+  const [selected, setSelected] = useState(
+    d.options.find((o) => o.recommended)?.id ?? d.options[0]?.id ?? "",
+  );
   const option = d.options.find((o) => o.id === selected);
   const settled = d.status !== "awaiting";
 
