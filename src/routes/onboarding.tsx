@@ -13,10 +13,14 @@ export const Route = createFileRoute("/onboarding")({
       { title: "Set up your briefing — Bearing by AWF Consultants" },
       {
         name: "description",
-        content: "A three-minute setup: choose your role, set priorities, load the sample company, and generate your first executive briefing.",
+        content:
+          "A three-minute setup: choose your role, set priorities, load the sample company, and generate your first executive briefing.",
       },
       { property: "og:title", content: "Set up your briefing — Bearing" },
-      { property: "og:description", content: "Generate your first executive briefing in under three minutes." },
+      {
+        property: "og:description",
+        content: "Generate your first executive briefing in under three minutes.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
@@ -41,7 +45,10 @@ function Onboarding() {
   const [step, setStep] = useState(0);
   const [role, setRole] = useState<Role>("executive");
   const [name, setName] = useState(ORG.executive.name);
-  const [picked, setPicked] = useState<string[]>(["Cash and liquidity", "Margin and profitability"]);
+  const [picked, setPicked] = useState<string[]>([
+    "Cash and liquidity",
+    "Margin and profitability",
+  ]);
   const [generating, setGenerating] = useState(false);
   const { signIn, log } = useWorkspace();
   const navigate = useNavigate();
@@ -53,7 +60,11 @@ function Onboarding() {
     setGenerating(true);
     signIn({ name: name.trim() || ORG.executive.name, role, priorities: picked, onboarded: true });
     window.setTimeout(() => {
-      log("Briefing generated", "Today briefing", `Priorities: ${picked.join(", ") || "none selected"}.`);
+      log(
+        "Briefing generated",
+        "Today briefing",
+        `Priorities: ${picked.join(", ") || "none selected"}.`,
+      );
       void navigate({ to: "/app/today" });
     }, 900);
   };
@@ -94,7 +105,11 @@ function Onboarding() {
         ) : null}
 
         {step === 1 ? (
-          <Section eyebrow="Your role" title="How will you use Bearing?" body="Role determines what you can approve. Executives approve decisions; advisors review evidence; administrators manage access.">
+          <Section
+            eyebrow="Your role"
+            title="How will you use Bearing?"
+            body="Role determines what you can approve. Executives approve decisions; advisors review evidence; administrators manage access."
+          >
             <div className="mb-6">
               <label htmlFor="ob-name" className="label-mono text-foreground">
                 Your name
@@ -228,7 +243,8 @@ function Onboarding() {
             <Primary onClick={finish} disabled={generating}>
               {generating ? (
                 <span className="inline-flex items-center gap-2">
-                  <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Generating briefing…
+                  <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Generating
+                  briefing…
                 </span>
               ) : (
                 "Generate briefing"

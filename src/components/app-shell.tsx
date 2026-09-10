@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { ProductLogo } from "@/components/brand";
 import { GlobalAsk } from "@/components/global-ask";
@@ -25,10 +25,15 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { session, hydrated, signOut } = useWorkspace();
   const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
+  // Someone who signs out is returned to the public site, not pushed back
+  // through onboarding they have already completed.
+  const hadSession = useRef(false);
+  if (session) hadSession.current = true;
+  const exitTo = hadSession.current ? "/" : "/onboarding";
 
   useEffect(() => {
-    if (hydrated && !session) void navigate({ to: "/onboarding" });
-  }, [hydrated, session, navigate]);
+    if (hydrated && !session) void navigate({ to: exitTo, replace: true });
+  }, [hydrated, session, navigate, exitTo]);
 
   if (!hydrated) {
     return (
@@ -42,8 +47,8 @@ export function AppShell({ children }: { children: ReactNode }) {
     return (
       <div className="flex min-h-dvh items-center justify-center px-4 text-center">
         <p className="text-[15px] text-muted-foreground">
-          Redirecting to onboarding…{" "}
-          <Link to="/onboarding" className="text-signal underline">
+          {hadSession.current ? "Signing out…" : "Redirecting to onboarding…"}{" "}
+          <Link to={exitTo} className="text-signal underline">
             Continue
           </Link>
         </p>
@@ -51,7 +56,8 @@ export function AppShell({ children }: { children: ReactNode }) {
     );
   }
 
-  const linkClass = "label-mono inline-flex min-h-11 items-center border-b-2 border-transparent px-1 text-foreground transition-colors hover:text-signal";
+  const linkClass =
+    "label-mono inline-flex min-h-11 items-center border-b-2 border-transparent px-1 text-foreground transition-colors hover:text-signal";
 
   return (
     <div className="min-h-dvh bg-background">
@@ -87,7 +93,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               type="button"
               onClick={() => {
                 signOut();
-                void navigate({ to: "/" });
+                void navigate({ to: "/", replace: true });
               }}
               className="label-mono min-h-11 border border-rule px-3 transition-colors hover:border-navy hover:bg-muted"
             >
@@ -160,7 +166,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               type="button"
               onClick={() => {
                 signOut();
-                void navigate({ to: "/" });
+                void navigate({ to: "/", replace: true });
               }}
               className="label-mono mt-2 min-h-11 w-full border border-rule px-3"
             >

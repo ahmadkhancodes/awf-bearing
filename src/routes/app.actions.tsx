@@ -6,7 +6,9 @@ import { riskById, type ActionItem } from "@/lib/demo-data";
 import { ROLE_RIGHTS, useWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/app/actions")({
-  head: () => ({ meta: [{ title: "Actions — Bearing" }, { name: "robots", content: "noindex,nofollow" }] }),
+  head: () => ({
+    meta: [{ title: "Actions — Bearing" }, { name: "robots", content: "noindex,nofollow" }],
+  }),
   component: Actions,
 });
 
@@ -18,7 +20,13 @@ const statusLabel: Record<ActionItem["status"], string> = {
 };
 
 const statusTone = (s: ActionItem["status"]) =>
-  s === "blocked" ? "critical" : s === "done" ? "positive" : s === "in-progress" ? "signal" : "neutral";
+  s === "blocked"
+    ? "critical"
+    : s === "done"
+      ? "positive"
+      : s === "in-progress"
+        ? "signal"
+        : "neutral";
 
 const NEXT: Record<ActionItem["status"], ActionItem["status"]> = {
   "not-started": "in-progress",
@@ -29,7 +37,9 @@ const NEXT: Record<ActionItem["status"], ActionItem["status"]> = {
 
 function Actions() {
   const { actions, session, setActionStatus } = useWorkspace();
-  const rights = session ? ROLE_RIGHTS[session.role] : { approve: false, assign: false, admin: false };
+  const rights = session
+    ? ROLE_RIGHTS[session.role]
+    : { approve: false, assign: false, admin: false };
   const open = actions.filter((a) => a.status !== "done");
   const done = actions.filter((a) => a.status === "done");
 
@@ -145,7 +155,13 @@ function ActionRow({
             }}
             className="label-mono ml-auto min-h-11 border border-navy bg-navy px-3 text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {a.status === "done" ? "Reopen" : a.status === "blocked" ? "Unblock" : a.status === "in-progress" ? "Mark complete" : "Start"}
+            {a.status === "done"
+              ? "Reopen"
+              : a.status === "blocked"
+                ? "Unblock"
+                : a.status === "in-progress"
+                  ? "Mark complete"
+                  : "Start"}
           </button>
         </div>
       </div>

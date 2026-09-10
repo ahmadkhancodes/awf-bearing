@@ -6,23 +6,43 @@ import { RISKS, money, type Risk } from "@/lib/demo-data";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/risks")({
-  head: () => ({ meta: [{ title: "Risks — Bearing" }, { name: "robots", content: "noindex,nofollow" }] }),
+  head: () => ({
+    meta: [{ title: "Risks — Bearing" }, { name: "robots", content: "noindex,nofollow" }],
+  }),
   component: Risks,
 });
 
 const FILTERS = ["Open", "All", "Resolved"] as const;
 
 const stateTone = (s: Risk["state"]) =>
-  s === "new" ? "signal" : s === "changed" ? "caution" : s === "improving" ? "positive" : s === "resolved" ? "positive" : "neutral";
+  s === "new"
+    ? "signal"
+    : s === "changed"
+      ? "caution"
+      : s === "improving"
+        ? "positive"
+        : s === "resolved"
+          ? "positive"
+          : "neutral";
 
 const matTone = (m: Risk["materiality"]) =>
-  m === "critical" ? "critical" : m === "high" ? "caution" : m === "moderate" ? "signal" : "neutral";
+  m === "critical"
+    ? "critical"
+    : m === "high"
+      ? "caution"
+      : m === "moderate"
+        ? "signal"
+        : "neutral";
 
 function Risks() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("Open");
 
   const list = RISKS.filter((r) =>
-    filter === "All" ? true : filter === "Resolved" ? r.state === "resolved" : r.state !== "resolved",
+    filter === "All"
+      ? true
+      : filter === "Resolved"
+        ? r.state === "resolved"
+        : r.state !== "resolved",
   ).sort((a, b) => b.impactValue * b.probability - a.impactValue * a.probability);
 
   return (
@@ -33,7 +53,11 @@ function Risks() {
         description="Bearing ranks exposure by materiality weighted by probability. Every risk carries an owner, a recommended response, and the evidence behind it."
       />
 
-      <div className="mt-8 flex flex-wrap items-center gap-2 border-b border-rule pb-3" role="group" aria-label="Filter risks">
+      <div
+        className="mt-8 flex flex-wrap items-center gap-2 border-b border-rule pb-3"
+        role="group"
+        aria-label="Filter risks"
+      >
         {FILTERS.map((f) => (
           <button
             key={f}
@@ -42,7 +66,9 @@ function Risks() {
             onClick={() => setFilter(f)}
             className={cn(
               "label-mono min-h-11 border px-3 transition-colors",
-              filter === f ? "border-navy bg-navy text-white" : "border-rule hover:border-navy hover:bg-muted",
+              filter === f
+                ? "border-navy bg-navy text-white"
+                : "border-rule hover:border-navy hover:bg-muted",
             )}
           >
             {f}
@@ -60,12 +86,17 @@ function Risks() {
         <ul className="mt-6 space-y-5">
           {list.map((r) => (
             <Panel as="li" key={r.id} className={cn(r.state === "resolved" && "opacity-80")}>
-              <div id={r.id} className="scroll-mt-32 flex flex-wrap items-center gap-2 border-b border-rule bg-muted px-4 py-2.5 sm:px-5">
+              <div
+                id={r.id}
+                className="scroll-mt-32 flex flex-wrap items-center gap-2 border-b border-rule bg-muted px-4 py-2.5 sm:px-5"
+              >
                 <StatePill tone={matTone(r.materiality)}>{r.materiality}</StatePill>
                 <StatePill tone={stateTone(r.state)}>{r.state}</StatePill>
                 <MonoLabel>{r.domain}</MonoLabel>
                 <span className="label-mono text-foreground ml-auto">
-                  {r.impactValue > 0 ? `${money(r.impactValue)} exposure` : "No direct £ exposure yet"}
+                  {r.impactValue > 0
+                    ? `${money(r.impactValue)} exposure`
+                    : "No direct £ exposure yet"}
                 </span>
               </div>
               <div className="px-4 py-4 sm:px-5">

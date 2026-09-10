@@ -290,7 +290,8 @@ export const SIGNALS: Signal[] = [
     urgency: "today",
     confidence: "high",
     owner: "Priya Raman, CFO",
-    recommendation: "Decide whether to stage the supplier run and accelerate the aged receivables push.",
+    recommendation:
+      "Decide whether to stage the supplier run and accelerate the aged receivables push.",
     evidenceIds: ["ev-cash-01", "ev-cash-02", "ev-ar-01", "ev-audit-01"],
     riskId: "risk-01",
     decisionId: "dec-01",
@@ -309,7 +310,8 @@ export const SIGNALS: Signal[] = [
     urgency: "this-week",
     confidence: "medium",
     owner: "Tomas Lind, COO",
-    recommendation: "Approve a commercial reset on the three contracts before the next milestone billing.",
+    recommendation:
+      "Approve a commercial reset on the three contracts before the next milestone billing.",
     evidenceIds: ["ev-margin-01", "ev-margin-02"],
     riskId: "risk-02",
     decisionId: "dec-02",
@@ -337,7 +339,8 @@ export const SIGNALS: Signal[] = [
     id: "sig-04",
     domain: "workforce",
     headline: "Field capacity is 9 engineers short of the committed Week 14–17 schedule",
-    whatChanged: "Billable utilisation reached 92%, leaving no absorption for the committed schedule.",
+    whatChanged:
+      "Billable utilisation reached 92%, leaving no absorption for the committed schedule.",
     whyItMatters:
       "Missed committed dates carry service credits and worsen the accounts already at renewal risk.",
     impactLabel: "≈ £310k of at-risk committed delivery",
@@ -363,7 +366,8 @@ export const SIGNALS: Signal[] = [
     urgency: "monitor",
     confidence: "low",
     owner: "Alina Novak, Client Director",
-    recommendation: "No decision required this week. Refresh stale close dates before acting on this signal.",
+    recommendation:
+      "No decision required this week. Refresh stale close dates before acting on this signal.",
     evidenceIds: ["ev-pipe-01"],
     riskId: "risk-05",
     state: "new",
@@ -372,7 +376,8 @@ export const SIGNALS: Signal[] = [
     id: "sig-06",
     domain: "finance",
     headline: "Resolved: duplicate subcontractor invoicing corrected",
-    whatChanged: "£64k of duplicate subcontract invoices identified in Week 9 were credited in Week 11.",
+    whatChanged:
+      "£64k of duplicate subcontract invoices identified in Week 9 were credited in Week 11.",
     whyItMatters: "Closed. No further executive attention required.",
     impactLabel: "£64k recovered",
     impactValue: 64000,
@@ -436,7 +441,8 @@ export const RISKS: Risk[] = [
     id: "risk-04",
     title: "Committed delivery schedule exceeds field capacity",
     domain: "workforce",
-    summary: "Nine-engineer shortfall against the Week 14–17 committed schedule at 92% utilisation.",
+    summary:
+      "Nine-engineer shortfall against the Week 14–17 committed schedule at 92% utilisation.",
     state: "new",
     materiality: "moderate",
     probability: 0.55,
@@ -465,7 +471,8 @@ export const RISKS: Risk[] = [
     id: "risk-06",
     title: "Duplicate subcontract invoicing",
     domain: "finance",
-    summary: "Duplicate invoices identified and credited. Control added to the weekly payment review.",
+    summary:
+      "Duplicate invoices identified and credited. Control added to the weekly payment review.",
     state: "resolved",
     materiality: "low",
     probability: 0.05,
@@ -489,7 +496,8 @@ export const DECISIONS: Decision[] = [
       {
         id: "opt-01a",
         label: "Stage the run over two weeks",
-        detail: "Release £520k now, £340k in Week 14, prioritising suppliers with delivery dependency.",
+        detail:
+          "Release £520k now, £340k in Week 14, prioritising suppliers with delivery dependency.",
         tradeoff: "Two suppliers move outside agreed terms; one has a 2% late fee.",
         expectedImpact: "Holds cover above 6 weeks. Est. cost £7k in fees and goodwill.",
         recommended: true,
@@ -499,7 +507,8 @@ export const DECISIONS: Decision[] = [
         label: "Pay in full as scheduled",
         detail: "Release the full £860k on the original date.",
         tradeoff: "Cover drops to approximately 5.3 weeks before receivables land.",
-        expectedImpact: "No supplier friction. Breaches the board cover floor for at least two weeks.",
+        expectedImpact:
+          "No supplier friction. Breaches the board cover floor for at least two weeks.",
       },
       {
         id: "opt-01c",
@@ -522,7 +531,8 @@ export const DECISIONS: Decision[] = [
     id: "dec-02",
     statement: "Reset commercial terms on the three loss-making fixed-price contracts?",
     domain: "delivery",
-    whyNow: "The next milestone billing locks scope on 26 days' notice; after that, re-baselining costs a variation claim.",
+    whyNow:
+      "The next milestone billing locks scope on 26 days' notice; after that, re-baselining costs a variation claim.",
     context:
       "Northgate, Kestrel Rail and Bexley Water account for 71% of a 5.5-point margin decline. Attribution is based on 88% complete cost coding.",
     options: [
@@ -539,7 +549,8 @@ export const DECISIONS: Decision[] = [
         label: "Reset Kestrel and Bexley only",
         detail: "Hold Northgate terms until the renewal is secured.",
         tradeoff: "Leaves roughly a third of the erosion in place for two quarters.",
-        expectedImpact: "Recovers an estimated £0.55m annualised. Protects the renewal conversation.",
+        expectedImpact:
+          "Recovers an estimated £0.55m annualised. Protects the renewal conversation.",
       },
       {
         id: "opt-02c",
@@ -559,7 +570,8 @@ export const DECISIONS: Decision[] = [
   },
   {
     id: "dec-03",
-    statement: "Cover the Week 14–17 capacity shortfall with contract hire, or re-sequence the schedule?",
+    statement:
+      "Cover the Week 14–17 capacity shortfall with contract hire, or re-sequence the schedule?",
     domain: "workforce",
     whyNow: "Contract engineers need 10 working days' notice; Week 14 starts in 11 days.",
     context:
@@ -588,7 +600,8 @@ export const DECISIONS: Decision[] = [
         expectedImpact: "Protects £240k. Est. cost £66k.",
       },
     ],
-    costOfDelay: "Past the notice window the only remaining option is re-sequencing, including the Northgate site.",
+    costOfDelay:
+      "Past the notice window the only remaining option is re-sequencing, including the Northgate site.",
     confidence: "medium",
     owner: "Tomas Lind, COO",
     deadline: "In 11 days",
@@ -732,7 +745,8 @@ export const CONNECTIONS: ConnectionSource[] = [
     category: "Finance",
     status: "connected",
     detail: "Loaded from the sample company dataset. Cash, receivables and payables.",
-    permission: "Read-only. Bearing reads balances and invoice records. It cannot post entries or move money.",
+    permission:
+      "Read-only. Bearing reads balances and invoice records. It cannot post entries or move money.",
     lastSyncedAt: "Today, 06:10",
     live: true,
   },
@@ -742,7 +756,8 @@ export const CONNECTIONS: ConnectionSource[] = [
     category: "Finance",
     status: "not-configured",
     detail: "Upload a finance CSV to replace or extend the sample ledger.",
-    permission: "Read-only. Files are parsed in your browser in this preview and never leave the device.",
+    permission:
+      "Read-only. Files are parsed in your browser in this preview and never leave the device.",
     live: true,
   },
   {
@@ -760,8 +775,10 @@ export const CONNECTIONS: ConnectionSource[] = [
     name: "Sample service desk export",
     category: "Revenue & customers",
     status: "needs-attention",
-    detail: "Last synchronisation completed yesterday at 22:15. Records after that time are not included.",
-    permission: "Read-only. Bearing reads ticket metadata and severity, not ticket message content.",
+    detail:
+      "Last synchronisation completed yesterday at 22:15. Records after that time are not included.",
+    permission:
+      "Read-only. Bearing reads ticket metadata and severity, not ticket message content.",
     lastSyncedAt: "Yesterday, 22:15",
     live: true,
   },

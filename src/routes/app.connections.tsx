@@ -6,7 +6,9 @@ import { CONNECTIONS, type ConnectionSource } from "@/lib/demo-data";
 import { ROLE_RIGHTS, useWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/app/connections")({
-  head: () => ({ meta: [{ title: "Connections — Bearing" }, { name: "robots", content: "noindex,nofollow" }] }),
+  head: () => ({
+    meta: [{ title: "Connections — Bearing" }, { name: "robots", content: "noindex,nofollow" }],
+  }),
   component: Connections,
 });
 
@@ -53,8 +55,14 @@ function Connections() {
       return;
     }
     setImportedRows(rows.length - 1);
-    log("CSV imported", "Finance · CSV import", `${rows.length - 1} rows parsed in-browser from ${file.name}.`);
-    toast.success(`${rows.length - 1} rows parsed`, { description: "Parsed locally; nothing was uploaded." });
+    log(
+      "CSV imported",
+      "Finance · CSV import",
+      `${rows.length - 1} rows parsed in-browser from ${file.name}.`,
+    );
+    toast.success(`${rows.length - 1} rows parsed`, {
+      description: "Parsed locally; nothing was uploaded.",
+    });
   };
 
   return (
@@ -68,7 +76,10 @@ function Connections() {
       <div className="mt-8 space-y-10">
         {CATEGORIES.map((cat) => (
           <section key={cat} aria-labelledby={cat.replace(/\W/g, "")}>
-            <h2 id={cat.replace(/\W/g, "")} className="border-b border-rule pb-3 text-2xl font-semibold">
+            <h2
+              id={cat.replace(/\W/g, "")}
+              className="border-b border-rule pb-3 text-2xl font-semibold"
+            >
               {cat}
             </h2>
             <ul className="mt-5 grid gap-px border border-rule bg-rule md:grid-cols-2">
@@ -126,8 +137,14 @@ function Connections() {
                       type="button"
                       disabled={!admin}
                       onClick={() => {
-                        log("Re-sync requested", c.name, "Administrator requested a re-synchronisation.");
-                        toast.success("Re-sync requested", { description: "Recorded in Trust & Audit." });
+                        log(
+                          "Re-sync requested",
+                          c.name,
+                          "Administrator requested a re-synchronisation.",
+                        );
+                        toast.success("Re-sync requested", {
+                          description: "Recorded in Trust & Audit.",
+                        });
                       }}
                       className="label-mono mt-4 min-h-11 border border-navy bg-navy px-3 text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
                     >

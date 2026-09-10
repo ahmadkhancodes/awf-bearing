@@ -5,7 +5,9 @@ import { EVIDENCE } from "@/lib/demo-data";
 import { useWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/app/trust")({
-  head: () => ({ meta: [{ title: "Trust & Audit — Bearing" }, { name: "robots", content: "noindex,nofollow" }] }),
+  head: () => ({
+    meta: [{ title: "Trust & Audit — Bearing" }, { name: "robots", content: "noindex,nofollow" }],
+  }),
   component: Trust,
 });
 
@@ -59,10 +61,18 @@ function Trust() {
               <caption className="sr-only">Audit records for this workspace, newest first</caption>
               <thead>
                 <tr className="border-b border-rule bg-muted">
-                  <th scope="col" className="label-mono px-4 py-2.5 font-normal">When</th>
-                  <th scope="col" className="label-mono px-4 py-2.5 font-normal">Actor</th>
-                  <th scope="col" className="label-mono px-4 py-2.5 font-normal">Event</th>
-                  <th scope="col" className="label-mono px-4 py-2.5 font-normal">Detail</th>
+                  <th scope="col" className="label-mono px-4 py-2.5 font-normal">
+                    When
+                  </th>
+                  <th scope="col" className="label-mono px-4 py-2.5 font-normal">
+                    Actor
+                  </th>
+                  <th scope="col" className="label-mono px-4 py-2.5 font-normal">
+                    Event
+                  </th>
+                  <th scope="col" className="label-mono px-4 py-2.5 font-normal">
+                    Detail
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -93,7 +103,11 @@ function Trust() {
         <Panel className="mt-5 p-5">
           <MonoLabel>Inspect every record</MonoLabel>
           <div className="mt-3">
-            <EvidenceButton ids={EVIDENCE.map((e) => e.id)} label="Open evidence index" relatedTo="All evidence records" />
+            <EvidenceButton
+              ids={EVIDENCE.map((e) => e.id)}
+              label="Open evidence index"
+              relatedTo="All evidence records"
+            />
           </div>
         </Panel>
       </section>

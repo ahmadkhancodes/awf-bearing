@@ -1,25 +1,27 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import {
-  ConfidenceMeter,
-  MonoLabel,
-  Panel,
-  SectionHeading,
-  StatePill,
-} from "@/components/ui-kit";
+import { ConfidenceMeter, MonoLabel, Panel, SectionHeading, StatePill } from "@/components/ui-kit";
 import { EvidenceButton } from "@/components/evidence-drawer";
 import type { Decision } from "@/lib/demo-data";
 import { ROLE_RIGHTS, useWorkspace } from "@/lib/workspace";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/decisions")({
-  head: () => ({ meta: [{ title: "Decisions — Bearing" }, { name: "robots", content: "noindex,nofollow" }] }),
+  head: () => ({
+    meta: [{ title: "Decisions — Bearing" }, { name: "robots", content: "noindex,nofollow" }],
+  }),
   component: Decisions,
 });
 
 const statusTone = (s: Decision["status"]) =>
-  s === "awaiting" ? "caution" : s === "approved" ? "positive" : s === "deferred" ? "neutral" : "signal";
+  s === "awaiting"
+    ? "caution"
+    : s === "approved"
+      ? "positive"
+      : s === "deferred"
+        ? "neutral"
+        : "signal";
 
 const statusLabel: Record<Decision["status"], string> = {
   awaiting: "Awaiting decision",
@@ -30,7 +32,9 @@ const statusLabel: Record<Decision["status"], string> = {
 
 function Decisions() {
   const { decisions, session, setDecisionStatus } = useWorkspace();
-  const rights = session ? ROLE_RIGHTS[session.role] : { approve: false, assign: false, admin: false };
+  const rights = session
+    ? ROLE_RIGHTS[session.role]
+    : { approve: false, assign: false, admin: false };
 
   return (
     <div>
@@ -49,7 +53,12 @@ function Decisions() {
 
       <ul className="mt-8 space-y-6">
         {decisions.map((d) => (
-          <DecisionCard key={d.id} decision={d} canApprove={rights.approve} onSet={setDecisionStatus} />
+          <DecisionCard
+            key={d.id}
+            decision={d}
+            canApprove={rights.approve}
+            onSet={setDecisionStatus}
+          />
         ))}
       </ul>
     </div>
@@ -65,7 +74,9 @@ function DecisionCard({
   canApprove: boolean;
   onSet: (id: string, status: Decision["status"], optionLabel?: string) => void;
 }) {
-  const [selected, setSelected] = useState(d.options.find((o) => o.recommended)?.id ?? d.options[0].id);
+  const [selected, setSelected] = useState(
+    d.options.find((o) => o.recommended)?.id ?? d.options[0]?.id ?? "",
+  );
   const option = d.options.find((o) => o.id === selected);
   const settled = d.status !== "awaiting";
 
@@ -76,7 +87,10 @@ function DecisionCard({
 
   return (
     <Panel as="li">
-      <div id={d.id} className="scroll-mt-32 flex flex-wrap items-center gap-2 border-b border-rule bg-muted px-4 py-2.5 sm:px-5">
+      <div
+        id={d.id}
+        className="scroll-mt-32 flex flex-wrap items-center gap-2 border-b border-rule bg-muted px-4 py-2.5 sm:px-5"
+      >
         <StatePill tone={statusTone(d.status)}>{statusLabel[d.status]}</StatePill>
         <MonoLabel>{d.domain}</MonoLabel>
         <span className="label-mono text-foreground ml-auto">Due {d.deadline.toLowerCase()}</span>
