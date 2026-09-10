@@ -129,15 +129,19 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
   }
 
   if (has(q, "risk", "worst", "biggest")) {
-    const top = RISKS.filter((r) => r.state !== "resolved").sort((a, b) => b.impactValue - a.impactValue)[0];
-    return {
-      ...base,
-      answer: `The largest open exposure is: ${top.title}.`,
-      impact: `${money(top.impactValue)} · ${top.horizon} · owner ${top.owner}`,
-      detail: [top.summary, `Recommended response: ${top.response}`],
-      evidenceIds: top.evidenceIds,
-      confidence: "medium",
-    };
+    const top = RISKS.filter((r) => r.state !== "resolved").sort(
+      (a, b) => b.impactValue - a.impactValue,
+    )[0];
+    if (top) {
+      return {
+        ...base,
+        answer: `The largest open exposure is: ${top.title}.`,
+        impact: `${money(top.impactValue)} · ${top.horizon} · owner ${top.owner}`,
+        detail: [top.summary, `Recommended response: ${top.response}`],
+        evidenceIds: top.evidenceIds,
+        confidence: "medium",
+      };
+    }
   }
 
   if (has(q, "pipeline", "sales", "revenue target", "cover")) {
