@@ -42,7 +42,11 @@ export const Route = createFileRoute("/")({
 });
 
 const LOOP = [
-  { k: "01", t: "Change", d: "Material movement across finance, revenue, customers, delivery and workforce." },
+  {
+    k: "01",
+    t: "Change",
+    d: "Material movement across finance, revenue, customers, delivery and workforce.",
+  },
   { k: "02", t: "Risk", d: "Ranked by money at stake and time remaining, not by alert volume." },
   { k: "03", t: "Decision", d: "Options, trade-offs, cost of delay, and a recommended course." },
   { k: "04", t: "Action", d: "One owner, one date, one outcome — traced back to the decision." },

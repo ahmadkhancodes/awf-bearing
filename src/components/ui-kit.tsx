@@ -58,10 +58,12 @@ export function urgencyTone(u: string): Tone {
 
 export function urgencyLabel(u: string) {
   return (
-    { today: "Act today", "this-week": "This week", "this-month": "This month", monitor: "Monitor" } as Record<
-      string,
-      string
-    >
+    {
+      today: "Act today",
+      "this-week": "This week",
+      "this-month": "This month",
+      monitor: "Monitor",
+    } as Record<string, string>
   )[u];
 }
 
@@ -74,7 +76,10 @@ export function ConfidenceMeter({ level }: { level: "high" | "medium" | "low" })
         {[0, 1, 2].map((i) => (
           <span
             key={i}
-            className={cn("h-2.5 w-[6px] border border-navy/40", i < filled ? "bg-navy" : "bg-transparent")}
+            className={cn(
+              "h-2.5 w-[6px] border border-navy/40",
+              i < filled ? "bg-navy" : "bg-transparent",
+            )}
           />
         ))}
       </span>
@@ -102,7 +107,13 @@ export function Sparkline({
   const rising = (values.at(-1) ?? 0) >= (values[0] ?? 0);
   const good = invert ? !rising : rising;
   return (
-    <svg viewBox="0 0 100 30" preserveAspectRatio="none" className="h-8 w-full" role="img" aria-label={label}>
+    <svg
+      viewBox="0 0 100 30"
+      preserveAspectRatio="none"
+      className="h-8 w-full"
+      role="img"
+      aria-label={label}
+    >
       <polyline
         points={pts}
         fill="none"

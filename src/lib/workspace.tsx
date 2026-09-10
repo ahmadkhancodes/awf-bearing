@@ -86,7 +86,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
             DECISIONS.map((d) => ({ ...d, status: parsed.decisionStatus?.[d.id] ?? d.status })),
           );
         if (parsed.actionStatus)
-          setActions(ACTIONS.map((a) => ({ ...a, status: parsed.actionStatus?.[a.id] ?? a.status })));
+          setActions(
+            ACTIONS.map((a) => ({ ...a, status: parsed.actionStatus?.[a.id] ?? a.status })),
+          );
         if (parsed.audit?.length) setAudit(parsed.audit);
       }
     } catch {
@@ -110,7 +112,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
             decisionStatus: Object.fromEntries(
               (next.decisions ?? decisions).map((d) => [d.id, d.status]),
             ),
-            actionStatus: Object.fromEntries((next.actions ?? actions).map((a) => [a.id, a.status])),
+            actionStatus: Object.fromEntries(
+              (next.actions ?? actions).map((a) => [a.id, a.status]),
+            ),
             audit: next.audit ?? audit,
           }),
         );

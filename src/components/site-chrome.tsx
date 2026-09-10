@@ -11,7 +11,10 @@ export function SiteHeader() {
           <ProductLogo />
         </Link>
         <nav aria-label="Product" className="ml-auto flex items-center gap-x-5">
-          <Link to="/security" className="label-mono min-h-11 content-center text-foreground hover:text-signal">
+          <Link
+            to="/security"
+            className="label-mono min-h-11 content-center text-foreground hover:text-signal"
+          >
             Security
           </Link>
           <Link
@@ -47,7 +50,10 @@ export function SiteFooter() {
           <Link to="/security" className="label-mono min-h-11 content-center hover:text-signal">
             Privacy & security
           </Link>
-          <Link to="/request-access" className="label-mono min-h-11 content-center hover:text-signal">
+          <Link
+            to="/request-access"
+            className="label-mono min-h-11 content-center hover:text-signal"
+          >
             Request access
           </Link>
           <Link to="/signin" className="label-mono min-h-11 content-center hover:text-signal">

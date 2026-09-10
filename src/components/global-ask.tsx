@@ -34,7 +34,11 @@ export function GlobalAsk() {
       const a = ask(question, decisions);
       setAnswer(a);
       setLoading(false);
-      log("Question asked", "Global Ask", `"${question.trim()}" — ${a.insufficient ? "answered as insufficient evidence" : "answered with evidence"}.`);
+      log(
+        "Question asked",
+        "Global Ask",
+        `"${question.trim()}" — ${a.insufficient ? "answered as insufficient evidence" : "answered with evidence"}.`,
+      );
     }, 420);
   };
 
@@ -95,7 +99,9 @@ export function GlobalAsk() {
               </p>
             ) : answer ? (
               <div>
-                {answer.insufficient ? <StatePill tone="caution">Insufficient evidence</StatePill> : null}
+                {answer.insufficient ? (
+                  <StatePill tone="caution">Insufficient evidence</StatePill>
+                ) : null}
                 <p className="mt-2 text-[17px] leading-relaxed text-foreground">{answer.answer}</p>
                 {answer.impact ? (
                   <p className="mt-3 border-l-2 border-signal pl-3 text-[15px]">{answer.impact}</p>

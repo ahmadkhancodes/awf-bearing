@@ -1,5 +1,11 @@
 import { useState, type ReactNode } from "react";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { MonoLabel, StatePill } from "@/components/ui-kit";
 import { EVIDENCE, evidenceById, type EvidenceKind } from "@/lib/demo-data";
 import { cn } from "@/lib/utils";
@@ -91,7 +97,9 @@ export function EvidenceButton({
                       <Row term="Reasoning">{r.reasoning}</Row>
                       <Row term="Confidence">{r.confidence}</Row>
                       {r.missingData ? <Row term="Missing data">{r.missingData}</Row> : null}
-                      {r.qualityWarning ? <Row term="Data-quality warning">{r.qualityWarning}</Row> : null}
+                      {r.qualityWarning ? (
+                        <Row term="Data-quality warning">{r.qualityWarning}</Row>
+                      ) : null}
                     </dl>
                   </li>
                 ))}

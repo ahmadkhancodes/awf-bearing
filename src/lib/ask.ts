@@ -1,12 +1,4 @@
-import {
-  DECISIONS,
-  FRESHNESS,
-  METRICS,
-  RISKS,
-  SIGNALS,
-  money,
-  type Decision,
-} from "./demo-data";
+import { DECISIONS, FRESHNESS, METRICS, RISKS, SIGNALS, money, type Decision } from "./demo-data";
 
 export interface AskAnswer {
   answer: string;
@@ -49,7 +41,8 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
     return {
       ...base,
       answer: `Cash closed at £${last.toFixed(2)}m, down £${Math.round((prev - last) * 1000)}k on the week — the largest single-week fall in the twelve-week history.`,
-      impact: "£860k supplier payment run is committed next week; cover is 6.4 weeks against a 6-week board floor.",
+      impact:
+        "£860k supplier payment run is committed next week; cover is 6.4 weeks against a 6-week board floor.",
       detail: [
         "Verified fact: closing balances reconciled across all accounts to Week 12.",
         "Calculated: four-week net movement of −£220k per week average.",
@@ -57,7 +50,8 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
       ],
       evidenceIds: ["ev-cash-01", "ev-cash-02", "ev-ar-01", "ev-audit-01"],
       confidence: "high",
-      uncertainty: "Two of the nine aged receivable accounts carry disputed lines and may not collect in full.",
+      uncertainty:
+        "Two of the nine aged receivable accounts carry disputed lines and may not collect in full.",
     };
   }
 
@@ -66,7 +60,8 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
       ...base,
       answer:
         "Northgate Facilities carries the largest exposure: £2.4m of annual contract value with a renewal in 74 days, after 14 severity-1 tickets in 21 days.",
-      impact: "£2.4m annual contract value, plus the account sits inside the fixed-price margin erosion.",
+      impact:
+        "£2.4m annual contract value, plus the account sits inside the fixed-price margin erosion.",
       detail: [
         "Verified fact: ticket counts and severity from the sample service desk export.",
         "Verified fact: contract value and renewal date from the sample CRM export.",
@@ -107,16 +102,30 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
       ],
       evidenceIds: ["ev-margin-01", "ev-margin-02"],
       confidence: "medium",
-      uncertainty: "Attribution rests on cost coding that is 88% complete; 12% of Week 12 timesheets are unapproved.",
+      uncertainty:
+        "Attribution rests on cost coding that is 88% complete; 12% of Week 12 timesheets are unapproved.",
     };
   }
 
-  if (has(q, "hiring", "hire", "capacity", "defer", "workforce", "engineer", "utilisation", "utilization")) {
+  if (
+    has(
+      q,
+      "hiring",
+      "hire",
+      "capacity",
+      "defer",
+      "workforce",
+      "engineer",
+      "utilisation",
+      "utilization",
+    )
+  ) {
     return {
       ...base,
       answer:
         "If the capacity decision is deferred past the 10-working-day notice window, contract hire is no longer available and the only remaining option is re-sequencing — including a Northgate site.",
-      impact: "£310k of committed delivery at risk; re-sequencing adds pressure to a £2.4m renewal-risk account.",
+      impact:
+        "£310k of committed delivery at risk; re-sequencing adds pressure to a £2.4m renewal-risk account.",
       detail: [
         "Verified fact: billable utilisation at 92% across 148 field engineers.",
         "AI inference: a nine-engineer shortfall against the Week 14–17 committed schedule.",
@@ -124,7 +133,8 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
       ],
       evidenceIds: ["ev-people-01", "ev-people-02", "ev-cust-02"],
       confidence: "medium",
-      uncertainty: "Two subcontract framework rates for Week 15 onwards are not loaded, so cost estimates may move.",
+      uncertainty:
+        "Two subcontract framework rates for Week 15 onwards are not loaded, so cost estimates may move.",
     };
   }
 
@@ -147,7 +157,8 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
   if (has(q, "pipeline", "sales", "revenue target", "cover")) {
     return {
       ...base,
-      answer: "Pipeline cover slipped to 1.54× against a 2.0× target, falling for a fifth consecutive week.",
+      answer:
+        "Pipeline cover slipped to 1.54× against a 2.0× target, falling for a fifth consecutive week.",
       impact: "Cover gap of 0.46× against the next-quarter target.",
       detail: [
         "Calculated: weighted qualified pipeline over the next-quarter target.",
@@ -155,7 +166,8 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
       ],
       evidenceIds: ["ev-pipe-01"],
       confidence: "low",
-      uncertainty: "Close dates on 14 opportunities are older than 30 days, which lowers confidence in the weighting.",
+      uncertainty:
+        "Close dates on 14 opportunities are older than 30 days, which lowers confidence in the weighting.",
     };
   }
 

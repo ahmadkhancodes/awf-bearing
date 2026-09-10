@@ -5,7 +5,9 @@ import { ORG } from "@/lib/demo-data";
 import { ROLE_LABEL, ROLE_RIGHTS, useWorkspace, type Role } from "@/lib/workspace";
 
 export const Route = createFileRoute("/app/settings")({
-  head: () => ({ meta: [{ title: "Settings — Bearing" }, { name: "robots", content: "noindex,nofollow" }] }),
+  head: () => ({
+    meta: [{ title: "Settings — Bearing" }, { name: "robots", content: "noindex,nofollow" }],
+  }),
   component: Settings,
 });
 
@@ -53,7 +55,10 @@ function Settings() {
           <legend className="label-mono text-foreground">Role</legend>
           <div className="mt-3 grid gap-px border border-rule bg-rule">
             {ROLES.map((r) => (
-              <label key={r} className="flex min-h-11 cursor-pointer items-center gap-3 bg-card px-4 py-3 text-[15px] has-[:checked]:bg-muted">
+              <label
+                key={r}
+                className="flex min-h-11 cursor-pointer items-center gap-3 bg-card px-4 py-3 text-[15px] has-[:checked]:bg-muted"
+              >
                 <input
                   type="radio"
                   name="role"
@@ -84,7 +89,10 @@ function Settings() {
           {PRIORITIES.map((p) => {
             const on = session.priorities.includes(p);
             return (
-              <label key={p} className="flex min-h-11 cursor-pointer items-center gap-3 bg-card px-4 py-3 text-[15px] has-[:checked]:bg-muted">
+              <label
+                key={p}
+                className="flex min-h-11 cursor-pointer items-center gap-3 bg-card px-4 py-3 text-[15px] has-[:checked]:bg-muted"
+              >
                 <input
                   type="checkbox"
                   checked={on}
@@ -120,7 +128,13 @@ function Settings() {
               type="button"
               onClick={() => {
                 const blob = new Blob(
-                  [JSON.stringify({ organisation: ORG.name, exportedAt: new Date().toISOString(), session }, null, 2)],
+                  [
+                    JSON.stringify(
+                      { organisation: ORG.name, exportedAt: new Date().toISOString(), session },
+                      null,
+                      2,
+                    ),
+                  ],
                   { type: "application/json" },
                 );
                 const url = URL.createObjectURL(blob);

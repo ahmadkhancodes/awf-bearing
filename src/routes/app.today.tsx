@@ -15,7 +15,9 @@ import { FRESHNESS, METRICS, SIGNALS } from "@/lib/demo-data";
 import { useWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/app/today")({
-  head: () => ({ meta: [{ title: "Today — Bearing" }, { name: "robots", content: "noindex,nofollow" }] }),
+  head: () => ({
+    meta: [{ title: "Today — Bearing" }, { name: "robots", content: "noindex,nofollow" }],
+  }),
   component: Today,
 });
 
@@ -38,15 +40,37 @@ function Today() {
       <header>
         <MonoLabel>Today · daily executive briefing</MonoLabel>
         <h1 className="mt-3 text-3xl font-semibold sm:text-4xl">
-          {greeting === "Here's what changed" ? `${first}, here's what changed.` : `${greeting}, ${first}. Here's what changed.`}
+          {greeting === "Here's what changed"
+            ? `${first}, here's what changed.`
+            : `${greeting}, ${first}. Here's what changed.`}
         </h1>
       </header>
 
       <dl className="mt-8 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
-        <Stat term="Data freshness" value={FRESHNESS.lastSyncedAt} note="1 source stale — service desk" tone="caution" />
-        <Stat term="Needs attention" value={`${open.length} signals`} note="Ranked by money and time" />
-        <Stat term="Waiting on you" value={`${awaiting.length} decisions`} note={awaiting[0] ? `Earliest: ${awaiting[0].deadline.toLowerCase()}` : "Nothing outstanding"} />
-        <Stat term="Material change" value="Cash −£220k" note="Largest weekly fall in 12 weeks" tone="critical" />
+        <Stat
+          term="Data freshness"
+          value={FRESHNESS.lastSyncedAt}
+          note="1 source stale — service desk"
+          tone="caution"
+        />
+        <Stat
+          term="Needs attention"
+          value={`${open.length} signals`}
+          note="Ranked by money and time"
+        />
+        <Stat
+          term="Waiting on you"
+          value={`${awaiting.length} decisions`}
+          note={
+            awaiting[0] ? `Earliest: ${awaiting[0].deadline.toLowerCase()}` : "Nothing outstanding"
+          }
+        />
+        <Stat
+          term="Material change"
+          value="Cash −£220k"
+          note="Largest weekly fall in 12 weeks"
+          tone="critical"
+        />
       </dl>
 
       {FRESHNESS.staleSources > 0 ? (
@@ -77,7 +101,11 @@ function Today() {
               <div className="flex flex-wrap items-center gap-2 border-b border-rule bg-muted px-4 py-2.5 sm:px-5">
                 <StatePill tone={urgencyTone(s.urgency)}>{urgencyLabel(s.urgency)}</StatePill>
                 <MonoLabel>{s.domain}</MonoLabel>
-                {s.state === "new" ? <StatePill tone="signal">New</StatePill> : <StatePill>Changed</StatePill>}
+                {s.state === "new" ? (
+                  <StatePill tone="signal">New</StatePill>
+                ) : (
+                  <StatePill>Changed</StatePill>
+                )}
                 <span className="label-mono text-foreground ml-auto">{s.impactLabel}</span>
               </div>
               <div className="px-4 py-4 sm:px-5">
@@ -132,9 +160,25 @@ function Today() {
         </h2>
         <div className="mt-6 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
           <Trend label="Cash (£m)" values={METRICS.cash} last="3.96" delta="−£220k this week" />
-          <Trend label="Delivery margin (%)" values={METRICS.deliveryMargin} last="25.9" delta="−5.5 pts over 12 weeks" />
-          <Trend label="Pipeline cover (×)" values={METRICS.pipelineCover} last="1.54" delta="Target 2.0×" />
-          <Trend label="Billable utilisation (%)" values={METRICS.billableUtil} last="92" delta="No absorption left" invert />
+          <Trend
+            label="Delivery margin (%)"
+            values={METRICS.deliveryMargin}
+            last="25.9"
+            delta="−5.5 pts over 12 weeks"
+          />
+          <Trend
+            label="Pipeline cover (×)"
+            values={METRICS.pipelineCover}
+            last="1.54"
+            delta="Target 2.0×"
+          />
+          <Trend
+            label="Billable utilisation (%)"
+            values={METRICS.billableUtil}
+            last="92"
+            delta="No absorption left"
+            invert
+          />
         </div>
         <p className="mt-3 text-[14px] text-muted-foreground">
           Shown because each one supports a signal above. Sample data.
@@ -175,7 +219,11 @@ function Stat({
       <dd
         className={
           "mt-1.5 font-display text-2xl font-semibold " +
-          (tone === "critical" ? "text-critical" : tone === "caution" ? "text-caution" : "text-foreground")
+          (tone === "critical"
+            ? "text-critical"
+            : tone === "caution"
+              ? "text-caution"
+              : "text-foreground")
         }
       >
         {value}
