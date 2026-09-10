@@ -10,33 +10,196 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as RequestAccessRouteImport } from './routes/request-access'
+import { Route as SecurityRouteImport } from './routes/security'
+import { Route as SigninRouteImport } from './routes/signin'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppActionsRouteImport } from './routes/app.actions'
+import { Route as AppConnectionsRouteImport } from './routes/app.connections'
+import { Route as AppDecisionsRouteImport } from './routes/app.decisions'
+import { Route as AppRisksRouteImport } from './routes/app.risks'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
+import { Route as AppTodayRouteImport } from './routes/app.today'
+import { Route as AppTrustRouteImport } from './routes/app.trust'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RequestAccessRoute = RequestAccessRouteImport.update({
+  id: '/request-access',
+  path: '/request-access',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecurityRoute = SecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SigninRoute = SigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppActionsRoute = AppActionsRouteImport.update({
+  id: '/actions',
+  path: '/actions',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppConnectionsRoute = AppConnectionsRouteImport.update({
+  id: '/connections',
+  path: '/connections',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDecisionsRoute = AppDecisionsRouteImport.update({
+  id: '/decisions',
+  path: '/decisions',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRisksRoute = AppRisksRouteImport.update({
+  id: '/risks',
+  path: '/risks',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTodayRoute = AppTodayRouteImport.update({
+  id: '/today',
+  path: '/today',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTrustRoute = AppTrustRouteImport.update({
+  id: '/trust',
+  path: '/trust',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/onboarding': typeof OnboardingRoute
+  '/request-access': typeof RequestAccessRoute
+  '/security': typeof SecurityRoute
+  '/signin': typeof SigninRoute
+  '/app/actions': typeof AppActionsRoute
+  '/app/connections': typeof AppConnectionsRoute
+  '/app/decisions': typeof AppDecisionsRoute
+  '/app/risks': typeof AppRisksRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/today': typeof AppTodayRoute
+  '/app/trust': typeof AppTrustRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/onboarding': typeof OnboardingRoute
+  '/request-access': typeof RequestAccessRoute
+  '/security': typeof SecurityRoute
+  '/signin': typeof SigninRoute
+  '/app/actions': typeof AppActionsRoute
+  '/app/connections': typeof AppConnectionsRoute
+  '/app/decisions': typeof AppDecisionsRoute
+  '/app/risks': typeof AppRisksRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/today': typeof AppTodayRoute
+  '/app/trust': typeof AppTrustRoute
+  '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/onboarding': typeof OnboardingRoute
+  '/request-access': typeof RequestAccessRoute
+  '/security': typeof SecurityRoute
+  '/signin': typeof SigninRoute
+  '/app/actions': typeof AppActionsRoute
+  '/app/connections': typeof AppConnectionsRoute
+  '/app/decisions': typeof AppDecisionsRoute
+  '/app/risks': typeof AppRisksRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/today': typeof AppTodayRoute
+  '/app/trust': typeof AppTrustRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/onboarding'
+    | '/request-access'
+    | '/security'
+    | '/signin'
+    | '/app/actions'
+    | '/app/connections'
+    | '/app/decisions'
+    | '/app/risks'
+    | '/app/settings'
+    | '/app/today'
+    | '/app/trust'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/onboarding'
+    | '/request-access'
+    | '/security'
+    | '/signin'
+    | '/app/actions'
+    | '/app/connections'
+    | '/app/decisions'
+    | '/app/risks'
+    | '/app/settings'
+    | '/app/today'
+    | '/app/trust'
+    | '/app'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/onboarding'
+    | '/request-access'
+    | '/security'
+    | '/signin'
+    | '/app/actions'
+    | '/app/connections'
+    | '/app/decisions'
+    | '/app/risks'
+    | '/app/settings'
+    | '/app/today'
+    | '/app/trust'
+    | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  OnboardingRoute: typeof OnboardingRoute
+  RequestAccessRoute: typeof RequestAccessRoute
+  SecurityRoute: typeof SecurityRoute
+  SigninRoute: typeof SigninRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +211,131 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/request-access': {
+      id: '/request-access'
+      path: '/request-access'
+      fullPath: '/request-access'
+      preLoaderRoute: typeof RequestAccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security': {
+      id: '/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/actions': {
+      id: '/app/actions'
+      path: '/actions'
+      fullPath: '/app/actions'
+      preLoaderRoute: typeof AppActionsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/connections': {
+      id: '/app/connections'
+      path: '/connections'
+      fullPath: '/app/connections'
+      preLoaderRoute: typeof AppConnectionsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/decisions': {
+      id: '/app/decisions'
+      path: '/decisions'
+      fullPath: '/app/decisions'
+      preLoaderRoute: typeof AppDecisionsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/risks': {
+      id: '/app/risks'
+      path: '/risks'
+      fullPath: '/app/risks'
+      preLoaderRoute: typeof AppRisksRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/today': {
+      id: '/app/today'
+      path: '/today'
+      fullPath: '/app/today'
+      preLoaderRoute: typeof AppTodayRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/trust': {
+      id: '/app/trust'
+      path: '/trust'
+      fullPath: '/app/trust'
+      preLoaderRoute: typeof AppTrustRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppActionsRoute: typeof AppActionsRoute
+  AppConnectionsRoute: typeof AppConnectionsRoute
+  AppDecisionsRoute: typeof AppDecisionsRoute
+  AppRisksRoute: typeof AppRisksRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppTodayRoute: typeof AppTodayRoute
+  AppTrustRoute: typeof AppTrustRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppActionsRoute: AppActionsRoute,
+  AppConnectionsRoute: AppConnectionsRoute,
+  AppDecisionsRoute: AppDecisionsRoute,
+  AppRisksRoute: AppRisksRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppTodayRoute: AppTodayRoute,
+  AppTrustRoute: AppTrustRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  OnboardingRoute: OnboardingRoute,
+  RequestAccessRoute: RequestAccessRoute,
+  SecurityRoute: SecurityRoute,
+  SigninRoute: SigninRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
