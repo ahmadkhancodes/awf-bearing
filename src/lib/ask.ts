@@ -44,8 +44,8 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
   }
 
   if (has(q, "cash", "runway", "liquidity", "burn")) {
-    const last = METRICS.cash[METRICS.cash.length - 1];
-    const prev = METRICS.cash[METRICS.cash.length - 2];
+    const last = METRICS.cash.at(-1) ?? 0;
+    const prev = METRICS.cash.at(-2) ?? 0;
     return {
       ...base,
       answer: `Cash closed at £${last.toFixed(2)}m, down £${Math.round((prev - last) * 1000)}k on the week — the largest single-week fall in the twelve-week history.`,
