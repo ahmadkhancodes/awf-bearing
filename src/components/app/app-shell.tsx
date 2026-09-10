@@ -2,9 +2,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   Activity,
-  ClipboardList,
   LayoutDashboard,
-  History,
   ListChecks,
   LogOut,
   Menu,

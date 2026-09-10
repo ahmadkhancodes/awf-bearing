@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUp, Plus, Sparkle } from "lucide-react";
+import { Activity, ArrowRight, ArrowUp, CircleCheckBig, Clock3, Plus, TrendingDown, Users, Wallet } from "lucide-react";
 import { AnswerChart } from "@/components/app/answer-chart";
 import { EvidenceAccordion } from "@/components/app/evidence";
 import { Btn, Card, KpiCard, Pill } from "@/components/app/primitives";
@@ -26,6 +26,8 @@ interface Turn {
   question: string;
   answer: AskAnswer;
 }
+
+const promptIcons = [Activity, TrendingDown, Users, CircleCheckBig, Wallet, Clock3] as const;
 
 function AskPage() {
   const { decisions, recordQuestion } = useWorkspace();
@@ -66,7 +68,7 @@ function AskPage() {
         e.preventDefault();
         submit(input);
       }}
-      className="relative"
+      className="group relative rounded-xl border-2 border-navy bg-card transition-[border-color,box-shadow] focus-within:border-signal focus-within:ring-4 focus-within:ring-signal/10 focus-within:shadow-sm"
     >
       <label htmlFor="ask-input" className="sr-only">
         Ask a question about {ORG.name}
@@ -83,13 +85,14 @@ function AskPage() {
         }}
         rows={big ? 3 : 2}
         placeholder="Ask about cash, margin, customers, delivery, risks or decisions…"
-        className="w-full resize-none rounded-lg border border-rule bg-card py-3 pl-3.5 pr-14 text-[14px] outline-none transition-colors placeholder:text-muted-foreground focus:border-signal"
+        className="w-full resize-none rounded-xl border-0 bg-transparent px-4 pb-9 pt-3.5 text-[15px] outline-none placeholder:text-muted-foreground"
       />
+      <span className="pointer-events-none absolute bottom-3 left-4 hidden text-[11px] text-muted-foreground sm:block">Enter to ask · Shift + Enter for a new line</span>
       <button
         type="submit"
         aria-label="Send question"
         disabled={!input.trim()}
-        className="absolute bottom-3 right-3 inline-flex size-8 items-center justify-center rounded-md border border-navy bg-navy text-white transition-opacity disabled:opacity-40"
+        className="absolute bottom-2.5 right-2.5 inline-flex size-9 items-center justify-center rounded-lg bg-navy text-white transition-colors hover:bg-signal disabled:opacity-35"
       >
         <ArrowUp className="size-4" aria-hidden="true" />
       </button>
@@ -98,32 +101,34 @@ function AskPage() {
 
   if (turns.length === 0) {
     return (
-      <div className="mx-auto flex min-h-[70dvh] max-w-2xl flex-col justify-center py-6">
+      <div className="mx-auto flex min-h-[68dvh] max-w-3xl flex-col justify-center py-5">
         <div className="text-center">
-          <Pill tone="signal">
-            <Sparkle className="size-3" aria-hidden="true" /> Demo workspace · Fictional data
-          </Pill>
-          <h1 className="mt-4 text-[24px] font-semibold tracking-tight sm:text-[28px]">
-            What do you want to understand about the business?
+          <h1 className="text-[25px] font-semibold tracking-tight sm:text-[30px]">
+            Ask anything about the business
           </h1>
-          <p className="mt-2 text-[13.5px] text-muted-foreground">
-            {ORG.name} · 12 weeks of simulated finance, revenue, delivery and workforce records.
+          <p className="mt-2 text-[14px] text-muted-foreground">
+            Get an evidence-backed answer across finance, customers, delivery and operations.
           </p>
         </div>
 
         <div className="mt-6">{composer(true)}</div>
 
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
-          {SUGGESTED_QUESTIONS.map((s) => (
+          {SUGGESTED_QUESTIONS.map((s, index) => {
+            const Icon = promptIcons[index] ?? Activity;
+            return (
             <button
               key={s}
               type="button"
               onClick={() => submit(s)}
-              className="rounded-lg border border-rule bg-card px-3.5 py-3 text-left text-[13.5px] font-medium transition-colors hover:border-signal hover:bg-signal-soft"
+              className="group flex min-h-14 items-center gap-3 rounded-lg border border-rule bg-card px-3 py-2.5 text-left text-[13px] font-medium transition-[border-color,background-color,transform] hover:-translate-y-0.5 hover:border-signal/60 hover:bg-signal-soft motion-reduce:transform-none"
             >
-              {s}
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-signal-soft text-signal"><Icon className="size-4" aria-hidden="true" /></span>
+              <span className="min-w-0 flex-1">{s}</span>
+              <ArrowRight className="size-3.5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 motion-reduce:transform-none" aria-hidden="true" />
             </button>
-          ))}
+            );
+          })}
         </div>
       </div>
     );
@@ -176,10 +181,10 @@ function AnswerBlock({ turn }: { turn: Turn }) {
           </ul>
           <div className="mt-3">
             <Link
-              to="/app/sources"
+              to="/app/connections"
               className="text-[13px] font-medium text-signal underline underline-offset-2"
             >
-              Review connected sources
+              Review connections
             </Link>
           </div>
         </Card>

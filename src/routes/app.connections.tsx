@@ -3,12 +3,13 @@ import { useRef, useState } from "react";
 import { Upload } from "lucide-react";
 import { toast } from "sonner";
 import { Btn, Card, EmptyState, PageHeader, Pill } from "@/components/app/primitives";
+import { IntegrationLogo } from "@/components/app/integration-logo";
 import { SOURCES, type SourceHealth } from "@/lib/analytics";
 import { useWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/app/connections")({
   head: () => ({
-    meta: [{ title: "Sources — Bearing" }, { name: "robots", content: "noindex,nofollow" }],
+    meta: [{ title: "Connections — Bearing" }, { name: "robots", content: "noindex,nofollow" }],
   }),
   component: SourcesPage,
 });
@@ -32,8 +33,8 @@ function SourcesPage() {
   return (
     <div className="space-y-4">
       <PageHeader
-        title="Sources"
-        description="Five simulated data sources feeding the demo workspace. No live third-party connection exists."
+        title="Connections"
+        description="Six simulated, read-only product connections. No third-party account is authenticated."
         actions={<Pill tone="signal">Demo workspace · Fictional data</Pill>}
       />
 
@@ -41,8 +42,8 @@ function SourcesPage() {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search sources"
-          aria-label="Search sources"
+          placeholder="Search connections"
+          aria-label="Search connections"
           className="h-9 w-full max-w-[260px] rounded-md border border-rule bg-card px-3 text-[13px] outline-none focus:border-signal"
         />
         <Btn onClick={() => fileRef.current?.click()}>
@@ -64,7 +65,7 @@ function SourcesPage() {
               setUploaded(
                 `${file.name} · ${Math.max(lines.length - 1, 0)} rows · ${cols} columns parsed into the demo workspace (not persisted).`,
               );
-              log("Uploaded CSV", "Sources", `${file.name}, ${lines.length - 1} rows.`);
+              log("Uploaded CSV", "Connections", `${file.name}, ${lines.length - 1} rows.`);
               toast.success("CSV parsed into the demo workspace");
             };
             reader.onerror = () => toast.error("That file could not be read.");
@@ -79,15 +80,18 @@ function SourcesPage() {
       ) : null}
 
       {rows.length === 0 ? (
-        <EmptyState title="No source matches" detail="Clear the search term to see all sources." />
+        <EmptyState title="No connection matches" detail="Clear the search term to see all connections." />
       ) : (
         <ul className="grid gap-2 lg:grid-cols-2">
           {rows.map((s) => (
-            <Card as="li" key={s.id} className="p-4">
+            <Card as="li" key={s.id} className="p-3.5 transition-colors hover:border-signal/35">
               <div className="flex flex-wrap items-start justify-between gap-2">
-                <div>
+                <div className="flex min-w-0 items-center gap-3">
+                  <IntegrationLogo brand={s.brand} />
+                  <div>
                   <p className="text-[14px] font-medium">{s.name}</p>
                   <p className="text-[12.5px] text-muted-foreground">{s.system}</p>
+                  </div>
                 </div>
                 <Pill tone={healthTone[s.health]}>{s.health}</Pill>
               </div>
@@ -98,7 +102,7 @@ function SourcesPage() {
                 <Cell term="Permission scope">{s.scope}</Cell>
               </dl>
               <p className="mt-3 border-t border-rule pt-2 text-[12px] text-muted-foreground">
-                Connected · Demo data — {s.note}
+                <span className="font-medium text-signal">Connected · Demo data</span> — {s.note}
               </p>
             </Card>
           ))}
