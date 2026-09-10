@@ -53,7 +53,9 @@ function AuditPage() {
                   <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground">{e.at}</td>
                   <td className="whitespace-nowrap px-4 py-2.5">{e.actor}</td>
                   <td className="whitespace-nowrap px-4 py-2.5 font-medium">{e.action}</td>
-                  <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground">{e.object}</td>
+                  <td className="whitespace-nowrap px-4 py-2.5 text-muted-foreground">
+                    {e.object}
+                  </td>
                   <td className="px-4 py-2.5 text-muted-foreground">{e.detail}</td>
                 </tr>
               ))}

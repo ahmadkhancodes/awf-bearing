@@ -170,7 +170,9 @@ function AnswerBlock({ turn }: { turn: Turn }) {
           <Pill tone="caution">Insufficient evidence</Pill>
           <p className="mt-2 text-[15px] font-medium">{a.headline}</p>
           <ul className="mt-2 space-y-1 text-[13px] text-muted-foreground">
-            {a.missing?.map((m) => <li key={m}>· {m}</li>)}
+            {a.missing?.map((m) => (
+              <li key={m}>· {m}</li>
+            ))}
           </ul>
           <div className="mt-3">
             <Link

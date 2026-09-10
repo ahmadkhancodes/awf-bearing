@@ -303,7 +303,8 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
       ],
       nextAction: {
         label: "Resolve the capacity decision",
-        detail: "dec-03 needs 10 working days' notice for contract hire; Week 14 starts in 11 days.",
+        detail:
+          "dec-03 needs 10 working days' notice for contract hire; Week 14 starts in 11 days.",
         to: "/app/decisions",
       },
       evidenceIds: ["ev-people-01", "ev-people-02"],
@@ -324,7 +325,10 @@ export function ask(question: string, decisions: Decision[] = DECISIONS): AskAns
         : "No open risks.",
       kpis: [
         { label: "Open risks", value: String(open.length), tone: "bad" },
-        { label: "Critical", value: String(open.filter((r) => r.materiality === "critical").length) },
+        {
+          label: "Critical",
+          value: String(open.filter((r) => r.materiality === "critical").length),
+        },
         { label: "Largest exposure", value: top ? money(top.impactValue) : "—" },
         { label: "Nearest horizon", value: top?.horizon ?? "—" },
       ],

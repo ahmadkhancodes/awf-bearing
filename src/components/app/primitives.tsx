@@ -52,7 +52,8 @@ export function Pill({
 }
 
 export function KpiCard({ kpi }: { kpi: Kpi }) {
-  const Icon = kpi.tone === "good" ? ArrowUpRight : kpi.tone === "bad" ? ArrowDownRight : ArrowRight;
+  const Icon =
+    kpi.tone === "good" ? ArrowUpRight : kpi.tone === "bad" ? ArrowDownRight : ArrowRight;
   return (
     <Card className="px-3.5 py-3">
       <p className="text-[12px] font-medium text-muted-foreground">{kpi.label}</p>

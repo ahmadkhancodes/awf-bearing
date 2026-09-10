@@ -48,7 +48,9 @@ export function EvidenceAccordion({
           </span>
           <span>Freshness: {freshness}</span>
           <Pill
-            tone={confidence === "high" ? "positive" : confidence === "medium" ? "caution" : "neutral"}
+            tone={
+              confidence === "high" ? "positive" : confidence === "medium" ? "caution" : "neutral"
+            }
           >
             {confidence} confidence
           </Pill>
