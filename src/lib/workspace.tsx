@@ -12,6 +12,7 @@ import {
   ACTIONS,
   AUDIT_SEED,
   DECISIONS,
+  ORG,
   type ActionItem,
   type AuditEvent,
   type Decision,
@@ -19,11 +20,22 @@ import {
 
 export type Role = "executive" | "operator" | "advisor" | "administrator";
 
+export const DEMO_CREDENTIALS = {
+  email: "demo@awfconsulting.com",
+  password: "Demo@2026",
+};
+
 export interface Session {
   name: string;
+  email: string;
   role: Role;
-  priorities: string[];
-  onboarded: boolean;
+  workspace: string;
+}
+
+export interface ChatTurn {
+  id: string;
+  question: string;
+  at: string;
 }
 
 interface WorkspaceState {
@@ -32,16 +44,19 @@ interface WorkspaceState {
   decisions: Decision[];
   actions: ActionItem[];
   audit: AuditEvent[];
-  signIn: (s: Session) => void;
+  history: ChatTurn[];
+  signIn: (email: string, password: string) => { ok: boolean; error?: string };
   signOut: () => void;
   updateSession: (patch: Partial<Session>) => void;
   setDecisionStatus: (id: string, status: Decision["status"], optionLabel?: string) => void;
   setActionStatus: (id: string, status: ActionItem["status"]) => void;
+  recordQuestion: (question: string) => void;
+  clearHistory: () => void;
   log: (action: string, object: string, detail: string) => void;
   reset: () => void;
 }
 
-const KEY = "bearing.workspace.v1";
+const KEY = "bearing.workspace.v2";
 
 const WorkspaceContext = createContext<WorkspaceState | null>(null);
 
@@ -59,6 +74,13 @@ export const ROLE_RIGHTS: Record<Role, { approve: boolean; assign: boolean; admi
   administrator: { approve: false, assign: true, admin: true },
 };
 
+const DEMO_SESSION: Session = {
+  name: ORG.executive.name,
+  email: DEMO_CREDENTIALS.email,
+  role: "executive",
+  workspace: ORG.name,
+};
+
 function now() {
   const d = new Date();
   return `Today, ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
@@ -70,6 +92,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [decisions, setDecisions] = useState<Decision[]>(DECISIONS);
   const [actions, setActions] = useState<ActionItem[]>(ACTIONS);
   const [audit, setAudit] = useState<AuditEvent[]>(AUDIT_SEED);
+  const [history, setHistory] = useState<ChatTurn[]>([]);
 
   useEffect(() => {
     try {
@@ -80,6 +103,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
           decisionStatus?: Record<string, Decision["status"]>;
           actionStatus?: Record<string, ActionItem["status"]>;
           audit?: AuditEvent[];
+          history?: ChatTurn[];
         };
         if (parsed.session) setSession(parsed.session);
         if (parsed.decisionStatus)
@@ -91,6 +115,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
             ACTIONS.map((a) => ({ ...a, status: parsed.actionStatus?.[a.id] ?? a.status })),
           );
         if (parsed.audit?.length) setAudit(parsed.audit);
+        if (parsed.history?.length) setHistory(parsed.history);
       }
     } catch {
       /* ignore corrupted local state */
@@ -98,17 +123,16 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setHydrated(true);
   }, []);
 
-  // Refs mirror the latest state so that two writes inside the same render
-  // (for example signIn() immediately followed by log()) cannot overwrite
-  // each other with a stale closure value.
   const sessionRef = useRef(session);
   const decisionsRef = useRef(decisions);
   const actionsRef = useRef(actions);
   const auditRef = useRef(audit);
+  const historyRef = useRef(history);
   sessionRef.current = session;
   decisionsRef.current = decisions;
   actionsRef.current = actions;
   auditRef.current = audit;
+  historyRef.current = history;
 
   const persist = useCallback(
     (next: {
@@ -116,11 +140,13 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       decisions?: Decision[];
       actions?: ActionItem[];
       audit?: AuditEvent[];
+      history?: ChatTurn[];
     }) => {
       if (next.session !== undefined) sessionRef.current = next.session;
       if (next.decisions) decisionsRef.current = next.decisions;
       if (next.actions) actionsRef.current = next.actions;
       if (next.audit) auditRef.current = next.audit;
+      if (next.history) historyRef.current = next.history;
       try {
         window.localStorage.setItem(
           KEY,
@@ -129,6 +155,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
             decisionStatus: Object.fromEntries(decisionsRef.current.map((d) => [d.id, d.status])),
             actionStatus: Object.fromEntries(actionsRef.current.map((a) => [a.id, a.status])),
             audit: auditRef.current,
+            history: historyRef.current,
           }),
         );
       } catch {
@@ -167,10 +194,20 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       decisions,
       actions,
       audit,
+      history,
       log,
-      signIn: (s) => {
-        setSession(s);
-        persist({ session: s });
+      signIn: (email, password) => {
+        const e = email.trim().toLowerCase();
+        if (!e || !password) return { ok: false, error: "Enter your email and password." };
+        if (e !== DEMO_CREDENTIALS.email || password !== DEMO_CREDENTIALS.password) {
+          return {
+            ok: false,
+            error: "Those credentials are not recognised. Use the demo credentials to continue.",
+          };
+        }
+        setSession(DEMO_SESSION);
+        persist({ session: DEMO_SESSION });
+        return { ok: true };
       },
       signOut: () => {
         setSession(null);
@@ -189,7 +226,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
           persist({ decisions: next });
           return next;
         });
-        const d = decisions.find((x) => x.id === id);
+        const d = decisionsRef.current.find((x) => x.id === id);
         log(
           status === "approved"
             ? "Decision approved"
@@ -206,13 +243,29 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
           persist({ actions: next });
           return next;
         });
-        const a = actions.find((x) => x.id === id);
+        const a = actionsRef.current.find((x) => x.id === id);
         log("Action updated", `${id} · ${a?.outcome ?? ""}`, `Status set to ${status}.`);
+      },
+      recordQuestion: (question) => {
+        setHistory((prev) => {
+          const next = [
+            { id: `q-${Date.now()}`, question, at: now() },
+            ...prev.filter((h) => h.question !== question),
+          ].slice(0, 12);
+          persist({ history: next });
+          return next;
+        });
+        log("Question asked", "Ask", question);
+      },
+      clearHistory: () => {
+        setHistory([]);
+        persist({ history: [] });
       },
       reset: () => {
         setDecisions(DECISIONS);
         setActions(ACTIONS);
         setAudit(AUDIT_SEED);
+        setHistory([]);
         setSession(null);
         try {
           window.localStorage.removeItem(KEY);
@@ -221,7 +274,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         }
       },
     }),
-    [session, hydrated, decisions, actions, audit, persist, log],
+    [session, hydrated, decisions, actions, audit, history, persist, log],
   );
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>;
