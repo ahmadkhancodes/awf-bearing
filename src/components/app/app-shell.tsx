@@ -56,7 +56,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="mt-2.5 rounded-md bg-surface px-2.5 py-2">
           <p className="text-[11px] font-medium text-muted-foreground">Workspace</p>
           <p className="mt-0.5 text-[12.5px] font-medium leading-snug">{ORG.name}</p>
-          <p className="mt-1 text-[10.5px] text-muted-foreground">Demo workspace · Fictional data</p>
+          <p className="mt-1 text-[10.5px] text-muted-foreground">
+            Demo workspace · Fictional data
+          </p>
         </div>
       </div>
 

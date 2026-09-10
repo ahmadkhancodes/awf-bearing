@@ -80,7 +80,10 @@ function SourcesPage() {
       ) : null}
 
       {rows.length === 0 ? (
-        <EmptyState title="No connection matches" detail="Clear the search term to see all connections." />
+        <EmptyState
+          title="No connection matches"
+          detail="Clear the search term to see all connections."
+        />
       ) : (
         <ul className="grid gap-2 lg:grid-cols-2">
           {rows.map((s) => (
@@ -89,8 +92,8 @@ function SourcesPage() {
                 <div className="flex min-w-0 items-center gap-3">
                   <IntegrationLogo brand={s.brand} />
                   <div>
-                  <p className="text-[14px] font-medium">{s.name}</p>
-                  <p className="text-[12.5px] text-muted-foreground">{s.system}</p>
+                    <p className="text-[14px] font-medium">{s.name}</p>
+                    <p className="text-[12.5px] text-muted-foreground">{s.system}</p>
                   </div>
                 </div>
                 <Pill tone={healthTone[s.health]}>{s.health}</Pill>

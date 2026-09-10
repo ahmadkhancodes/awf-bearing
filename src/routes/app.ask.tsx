@@ -1,6 +1,16 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Activity, ArrowRight, ArrowUp, CircleCheckBig, Clock3, Plus, TrendingDown, Users, Wallet } from "lucide-react";
+import {
+  Activity,
+  ArrowRight,
+  ArrowUp,
+  CircleCheckBig,
+  Clock3,
+  Plus,
+  TrendingDown,
+  Users,
+  Wallet,
+} from "lucide-react";
 import { AnswerChart } from "@/components/app/answer-chart";
 import { EvidenceAccordion } from "@/components/app/evidence";
 import { Btn, Card, KpiCard, Pill } from "@/components/app/primitives";
@@ -87,7 +97,9 @@ function AskPage() {
         placeholder="Ask about cash, margin, customers, delivery, risks or decisions…"
         className="w-full resize-none rounded-xl border-0 bg-transparent px-4 pb-9 pt-3.5 text-[15px] outline-none placeholder:text-muted-foreground"
       />
-      <span className="pointer-events-none absolute bottom-3 left-4 hidden text-[11px] text-muted-foreground sm:block">Enter to ask · Shift + Enter for a new line</span>
+      <span className="pointer-events-none absolute bottom-3 left-4 hidden text-[11px] text-muted-foreground sm:block">
+        Enter to ask · Shift + Enter for a new line
+      </span>
       <button
         type="submit"
         aria-label="Send question"
@@ -117,16 +129,21 @@ function AskPage() {
           {SUGGESTED_QUESTIONS.map((s, index) => {
             const Icon = promptIcons[index] ?? Activity;
             return (
-            <button
-              key={s}
-              type="button"
-              onClick={() => submit(s)}
-              className="group flex min-h-14 items-center gap-3 rounded-lg border border-rule bg-card px-3 py-2.5 text-left text-[13px] font-medium transition-[border-color,background-color,transform] hover:-translate-y-0.5 hover:border-signal/60 hover:bg-signal-soft motion-reduce:transform-none"
-            >
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-signal-soft text-signal"><Icon className="size-4" aria-hidden="true" /></span>
-              <span className="min-w-0 flex-1">{s}</span>
-              <ArrowRight className="size-3.5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 motion-reduce:transform-none" aria-hidden="true" />
-            </button>
+              <button
+                key={s}
+                type="button"
+                onClick={() => submit(s)}
+                className="group flex min-h-14 items-center gap-3 rounded-lg border border-rule bg-card px-3 py-2.5 text-left text-[13px] font-medium transition-[border-color,background-color,transform] hover:-translate-y-0.5 hover:border-signal/60 hover:bg-signal-soft motion-reduce:transform-none"
+              >
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-signal-soft text-signal">
+                  <Icon className="size-4" aria-hidden="true" />
+                </span>
+                <span className="min-w-0 flex-1">{s}</span>
+                <ArrowRight
+                  className="size-3.5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 motion-reduce:transform-none"
+                  aria-hidden="true"
+                />
+              </button>
             );
           })}
         </div>
