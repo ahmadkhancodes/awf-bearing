@@ -1,97 +1,139 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { SitePage } from "@/components/site-chrome";
-import { MonoLabel } from "@/components/ui-kit";
-import { ROLE_LABEL, useWorkspace, type Role } from "@/lib/workspace";
-import { ORG } from "@/lib/demo-data";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { ProductLogo } from "@/components/brand";
+import { DEMO_CREDENTIALS, useWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/signin")({
   head: () => ({
     meta: [
-      { title: "Sign in — Bearing by AWF Consultants" },
+      { title: "Sign in — Bearing by AWF Consulting" },
       {
         name: "description",
-        content: "Sign in to Bearing, the executive operations platform from AWF Consultants.",
+        content: "Sign in to Bearing, the executive operations platform from AWF Consulting.",
       },
-      { property: "og:title", content: "Sign in — Bearing by AWF Consultants" },
-      { property: "og:description", content: "Access your Bearing workspace." },
+      { property: "og:title", content: "Sign in — Bearing by AWF Consulting" },
+      { property: "og:description", content: "Access your Bearing demo workspace." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
     ],
-    links: [{ rel: "canonical", href: "https://awf-bearing.lovable.app/signin" }],
   }),
   component: SignIn,
 });
 
-const ROLES: Role[] = ["executive", "operator", "advisor", "administrator"];
-
 function SignIn() {
-  const { signIn, session, log } = useWorkspace();
+  const { signIn, session, hydrated, log } = useWorkspace();
   const navigate = useNavigate();
-  const [role, setRole] = useState<Role>("executive");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  useEffect(() => {
+    if (hydrated && session) void navigate({ to: "/app/ask", replace: true });
+  }, [hydrated, session, navigate]);
+
+  const field =
+    "h-10 w-full rounded-md border border-rule bg-card px-3 text-[14px] outline-none transition-colors placeholder:text-muted-foreground focus:border-signal";
+
   return (
-    <SitePage>
-      <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
-        <MonoLabel>Sign in</MonoLabel>
-        <h1 className="mt-4 text-3xl font-semibold">Enter the sample workspace</h1>
-        <p className="mt-3 text-[15px] text-muted-foreground">
-          This preview has no password authentication connected. Choose a role to enter the sample
-          workspace for {ORG.name}. Role controls what you are permitted to do.
-        </p>
-
-        <fieldset className="mt-8">
-          <legend className="label-mono text-foreground">Role</legend>
-          <div className="mt-3 grid gap-px border border-rule bg-rule">
-            {ROLES.map((r) => (
-              <label
-                key={r}
-                className="flex min-h-11 cursor-pointer items-center gap-3 bg-card px-4 py-3 text-[15px] has-[:checked]:bg-muted"
-              >
-                <input
-                  type="radio"
-                  name="role"
-                  value={r}
-                  checked={role === r}
-                  onChange={() => setRole(r)}
-                  className="size-4 accent-[var(--navy)]"
-                />
-                <span>{ROLE_LABEL[r]}</span>
-              </label>
-            ))}
+    <div className="flex min-h-dvh flex-col bg-surface">
+      <div className="flex flex-1 items-center justify-center px-4 py-10">
+        <div className="w-full max-w-[380px]">
+          <div className="flex justify-center">
+            <ProductLogo />
           </div>
-        </fieldset>
+          <p className="mt-4 text-center text-[14px] text-muted-foreground">
+            Ask your business a question. Get a decision-ready answer.
+          </p>
 
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => {
-            setBusy(true);
-            const s = {
-              name: role === "executive" ? ORG.executive.name : `${ROLE_LABEL[role]} user`,
-              role,
-              priorities: session?.priorities ?? ["Cash", "Margin", "Customers"],
-              onboarded: true,
-            };
-            signIn(s);
-            log("Signed in", "Session", `Role: ${ROLE_LABEL[role]}.`);
-            void navigate({ to: "/app/today" });
-          }}
-          className="label-mono mt-6 min-h-11 w-full border border-navy bg-navy px-5 text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-        >
-          {busy ? "Opening workspace…" : "Continue"}
-        </button>
+          <form
+            className="mt-6 rounded-lg border border-rule bg-card p-5"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setBusy(true);
+              const res = signIn(email, password);
+              if (!res.ok) {
+                setError(res.error ?? "Sign in failed.");
+                setBusy(false);
+                return;
+              }
+              setError(null);
+              log("Signed in", "Session", "Demo workspace opened.");
+              void navigate({ to: "/app/ask", replace: true });
+            }}
+          >
+            <label className="block text-[12px] font-medium text-muted-foreground" htmlFor="email">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              autoComplete="username"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@company.com"
+              className={`mt-1 ${field}`}
+            />
 
-        <p className="mt-4 text-[14px] text-muted-foreground">
-          New here?{" "}
-          <Link to="/onboarding" className="text-signal underline">
-            Run the guided setup instead
-          </Link>
-          .
-        </p>
+            <label
+              className="mt-4 block text-[12px] font-medium text-muted-foreground"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              className={`mt-1 ${field}`}
+            />
+
+            {error ? (
+              <p role="alert" className="mt-3 text-[12.5px] text-critical">
+                {error}
+              </p>
+            ) : null}
+
+            <button
+              type="submit"
+              disabled={busy}
+              className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-md border border-navy bg-navy text-[14px] font-medium text-white transition-colors hover:bg-navy-deep disabled:opacity-60"
+            >
+              {busy ? "Signing in…" : "Sign in"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setEmail(DEMO_CREDENTIALS.email);
+                setPassword(DEMO_CREDENTIALS.password);
+                setError(null);
+              }}
+              className="mt-2 inline-flex h-10 w-full items-center justify-center rounded-md border border-rule bg-card text-[13.5px] font-medium hover:bg-muted"
+            >
+              Use demo credentials
+            </button>
+
+            <div className="mt-4 rounded-md border border-rule bg-surface px-3 py-2.5 text-[12px] text-muted-foreground">
+              <p className="font-medium text-foreground">Demo workspace · Fictional data</p>
+              <p className="mt-1">
+                Email: <span className="font-medium text-foreground">{DEMO_CREDENTIALS.email}</span>
+              </p>
+              <p>
+                Password:{" "}
+                <span className="font-medium text-foreground">{DEMO_CREDENTIALS.password}</span>
+              </p>
+            </div>
+          </form>
+        </div>
       </div>
-    </SitePage>
+      <footer className="pb-6 text-center text-[12px] text-muted-foreground">
+        Bearing by AWF Consulting · Demo environment with simulated sources
+      </footer>
+    </div>
   );
 }

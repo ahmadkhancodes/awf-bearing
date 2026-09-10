@@ -11,16 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
-import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as RequestAccessRouteImport } from './routes/request-access'
-import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppActionsRouteImport } from './routes/app.actions'
+import { Route as AppAskRouteImport } from './routes/app.ask'
+import { Route as AppAuditRouteImport } from './routes/app.audit'
 import { Route as AppConnectionsRouteImport } from './routes/app.connections'
 import { Route as AppDecisionsRouteImport } from './routes/app.decisions'
+import { Route as AppOverviewRouteImport } from './routes/app.overview'
 import { Route as AppRisksRouteImport } from './routes/app.risks'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
+import { Route as AppSourcesRouteImport } from './routes/app.sources'
 import { Route as AppTodayRouteImport } from './routes/app.today'
 import { Route as AppTrustRouteImport } from './routes/app.trust'
 
@@ -32,21 +33,6 @@ const IndexRoute = IndexRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RequestAccessRoute = RequestAccessRouteImport.update({
-  id: '/request-access',
-  path: '/request-access',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SecurityRoute = SecurityRouteImport.update({
-  id: '/security',
-  path: '/security',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SigninRoute = SigninRouteImport.update({
@@ -64,6 +50,16 @@ const AppActionsRoute = AppActionsRouteImport.update({
   path: '/actions',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAskRoute = AppAskRouteImport.update({
+  id: '/ask',
+  path: '/ask',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAuditRoute = AppAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppConnectionsRoute = AppConnectionsRouteImport.update({
   id: '/connections',
   path: '/connections',
@@ -74,6 +70,11 @@ const AppDecisionsRoute = AppDecisionsRouteImport.update({
   path: '/decisions',
   getParentRoute: () => AppRoute,
 } as any)
+const AppOverviewRoute = AppOverviewRouteImport.update({
+  id: '/overview',
+  path: '/overview',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRisksRoute = AppRisksRouteImport.update({
   id: '/risks',
   path: '/risks',
@@ -82,6 +83,11 @@ const AppRisksRoute = AppRisksRouteImport.update({
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSourcesRoute = AppSourcesRouteImport.update({
+  id: '/sources',
+  path: '/sources',
   getParentRoute: () => AppRoute,
 } as any)
 const AppTodayRoute = AppTodayRouteImport.update({
@@ -98,30 +104,32 @@ const AppTrustRoute = AppTrustRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
-  '/onboarding': typeof OnboardingRoute
-  '/request-access': typeof RequestAccessRoute
-  '/security': typeof SecurityRoute
   '/signin': typeof SigninRoute
   '/app/actions': typeof AppActionsRoute
+  '/app/ask': typeof AppAskRoute
+  '/app/audit': typeof AppAuditRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
+  '/app/overview': typeof AppOverviewRoute
   '/app/risks': typeof AppRisksRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/sources': typeof AppSourcesRoute
   '/app/today': typeof AppTodayRoute
   '/app/trust': typeof AppTrustRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/onboarding': typeof OnboardingRoute
-  '/request-access': typeof RequestAccessRoute
-  '/security': typeof SecurityRoute
   '/signin': typeof SigninRoute
   '/app/actions': typeof AppActionsRoute
+  '/app/ask': typeof AppAskRoute
+  '/app/audit': typeof AppAuditRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
+  '/app/overview': typeof AppOverviewRoute
   '/app/risks': typeof AppRisksRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/sources': typeof AppSourcesRoute
   '/app/today': typeof AppTodayRoute
   '/app/trust': typeof AppTrustRoute
   '/app': typeof AppIndexRoute
@@ -130,15 +138,16 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
-  '/onboarding': typeof OnboardingRoute
-  '/request-access': typeof RequestAccessRoute
-  '/security': typeof SecurityRoute
   '/signin': typeof SigninRoute
   '/app/actions': typeof AppActionsRoute
+  '/app/ask': typeof AppAskRoute
+  '/app/audit': typeof AppAuditRoute
   '/app/connections': typeof AppConnectionsRoute
   '/app/decisions': typeof AppDecisionsRoute
+  '/app/overview': typeof AppOverviewRoute
   '/app/risks': typeof AppRisksRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/sources': typeof AppSourcesRoute
   '/app/today': typeof AppTodayRoute
   '/app/trust': typeof AppTrustRoute
   '/app/': typeof AppIndexRoute
@@ -148,30 +157,32 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
-    | '/onboarding'
-    | '/request-access'
-    | '/security'
     | '/signin'
     | '/app/actions'
+    | '/app/ask'
+    | '/app/audit'
     | '/app/connections'
     | '/app/decisions'
+    | '/app/overview'
     | '/app/risks'
     | '/app/settings'
+    | '/app/sources'
     | '/app/today'
     | '/app/trust'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/onboarding'
-    | '/request-access'
-    | '/security'
     | '/signin'
     | '/app/actions'
+    | '/app/ask'
+    | '/app/audit'
     | '/app/connections'
     | '/app/decisions'
+    | '/app/overview'
     | '/app/risks'
     | '/app/settings'
+    | '/app/sources'
     | '/app/today'
     | '/app/trust'
     | '/app'
@@ -179,15 +190,16 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/app'
-    | '/onboarding'
-    | '/request-access'
-    | '/security'
     | '/signin'
     | '/app/actions'
+    | '/app/ask'
+    | '/app/audit'
     | '/app/connections'
     | '/app/decisions'
+    | '/app/overview'
     | '/app/risks'
     | '/app/settings'
+    | '/app/sources'
     | '/app/today'
     | '/app/trust'
     | '/app/'
@@ -196,9 +208,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
-  OnboardingRoute: typeof OnboardingRoute
-  RequestAccessRoute: typeof RequestAccessRoute
-  SecurityRoute: typeof SecurityRoute
   SigninRoute: typeof SigninRoute
 }
 
@@ -216,27 +225,6 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/request-access': {
-      id: '/request-access'
-      path: '/request-access'
-      fullPath: '/request-access'
-      preLoaderRoute: typeof RequestAccessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/security': {
-      id: '/security'
-      path: '/security'
-      fullPath: '/security'
-      preLoaderRoute: typeof SecurityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/signin': {
@@ -260,6 +248,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppActionsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/ask': {
+      id: '/app/ask'
+      path: '/ask'
+      fullPath: '/app/ask'
+      preLoaderRoute: typeof AppAskRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/audit': {
+      id: '/app/audit'
+      path: '/audit'
+      fullPath: '/app/audit'
+      preLoaderRoute: typeof AppAuditRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/connections': {
       id: '/app/connections'
       path: '/connections'
@@ -274,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDecisionsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/overview': {
+      id: '/app/overview'
+      path: '/overview'
+      fullPath: '/app/overview'
+      preLoaderRoute: typeof AppOverviewRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/risks': {
       id: '/app/risks'
       path: '/risks'
@@ -286,6 +295,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/app/settings'
       preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/sources': {
+      id: '/app/sources'
+      path: '/sources'
+      fullPath: '/app/sources'
+      preLoaderRoute: typeof AppSourcesRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/today': {
@@ -307,10 +323,14 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppActionsRoute: typeof AppActionsRoute
+  AppAskRoute: typeof AppAskRoute
+  AppAuditRoute: typeof AppAuditRoute
   AppConnectionsRoute: typeof AppConnectionsRoute
   AppDecisionsRoute: typeof AppDecisionsRoute
+  AppOverviewRoute: typeof AppOverviewRoute
   AppRisksRoute: typeof AppRisksRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  AppSourcesRoute: typeof AppSourcesRoute
   AppTodayRoute: typeof AppTodayRoute
   AppTrustRoute: typeof AppTrustRoute
   AppIndexRoute: typeof AppIndexRoute
@@ -318,10 +338,14 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppActionsRoute: AppActionsRoute,
+  AppAskRoute: AppAskRoute,
+  AppAuditRoute: AppAuditRoute,
   AppConnectionsRoute: AppConnectionsRoute,
   AppDecisionsRoute: AppDecisionsRoute,
+  AppOverviewRoute: AppOverviewRoute,
   AppRisksRoute: AppRisksRoute,
   AppSettingsRoute: AppSettingsRoute,
+  AppSourcesRoute: AppSourcesRoute,
   AppTodayRoute: AppTodayRoute,
   AppTrustRoute: AppTrustRoute,
   AppIndexRoute: AppIndexRoute,
@@ -332,9 +356,6 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
-  OnboardingRoute: OnboardingRoute,
-  RequestAccessRoute: RequestAccessRoute,
-  SecurityRoute: SecurityRoute,
   SigninRoute: SigninRoute,
 }
 export const routeTree = rootRouteImport
