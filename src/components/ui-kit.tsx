@@ -99,7 +99,7 @@ export function Sparkline({
   const pts = values
     .map((v, i) => `${(i / (values.length - 1)) * 100},${28 - ((v - min) / span) * 26}`)
     .join(" ");
-  const rising = values[values.length - 1] >= values[0];
+  const rising = (values.at(-1) ?? 0) >= (values[0] ?? 0);
   const good = invert ? !rising : rising;
   return (
     <svg viewBox="0 0 100 30" preserveAspectRatio="none" className="h-8 w-full" role="img" aria-label={label}>
