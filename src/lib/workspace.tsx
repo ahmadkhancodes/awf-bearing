@@ -126,9 +126,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
           KEY,
           JSON.stringify({
             session: sessionRef.current,
-            decisionStatus: Object.fromEntries(
-              decisionsRef.current.map((d) => [d.id, d.status]),
-            ),
+            decisionStatus: Object.fromEntries(decisionsRef.current.map((d) => [d.id, d.status])),
             actionStatus: Object.fromEntries(actionsRef.current.map((a) => [a.id, a.status])),
             audit: auditRef.current,
           }),
