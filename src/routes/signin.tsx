@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ProductLogo } from "@/components/brand";
 import { DEMO_CREDENTIALS, useWorkspace } from "@/lib/workspace";
@@ -24,7 +24,6 @@ export const Route = createFileRoute("/signin")({
 function SignIn() {
   const { signIn, session, hydrated, log } = useWorkspace();
   const navigate = useNavigate();
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -61,11 +60,6 @@ function SignIn() {
               }
               setError(null);
               log("Signed in", "Session", "Demo workspace opened.");
-               void Promise.all([
-                 router.preloadRoute({ to: "/app/overview" }),
-                 router.preloadRoute({ to: "/app/decisions" }),
-                 router.preloadRoute({ to: "/app/connections" }),
-               ]);
               void navigate({ to: "/app/ask", replace: true });
             }}
           >
