@@ -149,6 +149,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       decisions,
       actions,
       audit,
+      log,
       signIn: (s) => {
         setSession(s);
         persist({ session: s });
