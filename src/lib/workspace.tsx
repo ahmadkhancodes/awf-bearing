@@ -97,6 +97,18 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setHydrated(true);
   }, []);
 
+  // Refs mirror the latest state so that two writes inside the same render
+  // (for example signIn() immediately followed by log()) cannot overwrite
+  // each other with a stale closure value.
+  const sessionRef = useRef(session);
+  const decisionsRef = useRef(decisions);
+  const actionsRef = useRef(actions);
+  const auditRef = useRef(audit);
+  sessionRef.current = session;
+  decisionsRef.current = decisions;
+  actionsRef.current = actions;
+  auditRef.current = audit;
+
   const persist = useCallback(
     (next: {
       session?: Session | null;
@@ -104,35 +116,38 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       actions?: ActionItem[];
       audit?: AuditEvent[];
     }) => {
+      if (next.session !== undefined) sessionRef.current = next.session;
+      if (next.decisions) decisionsRef.current = next.decisions;
+      if (next.actions) actionsRef.current = next.actions;
+      if (next.audit) auditRef.current = next.audit;
       try {
         window.localStorage.setItem(
           KEY,
           JSON.stringify({
-            session: next.session !== undefined ? next.session : session,
+            session: sessionRef.current,
             decisionStatus: Object.fromEntries(
-              (next.decisions ?? decisions).map((d) => [d.id, d.status]),
+              decisionsRef.current.map((d) => [d.id, d.status]),
             ),
-            actionStatus: Object.fromEntries(
-              (next.actions ?? actions).map((a) => [a.id, a.status]),
-            ),
-            audit: next.audit ?? audit,
+            actionStatus: Object.fromEntries(actionsRef.current.map((a) => [a.id, a.status])),
+            audit: auditRef.current,
           }),
         );
       } catch {
         /* storage unavailable */
       }
     },
-    [session, decisions, actions, audit],
+    [],
   );
 
   const log = useCallback(
     (action: string, object: string, detail: string) => {
       setAudit((prev) => {
+        const actor = sessionRef.current;
         const next = [
           {
             id: `aud-${Date.now()}-${Math.round(Math.random() * 1000)}`,
             at: now(),
-            actor: session ? `${session.name}, ${ROLE_LABEL[session.role]}` : "Unknown user",
+            actor: actor ? `${actor.name}, ${ROLE_LABEL[actor.role]}` : "Unknown user",
             action,
             object,
             detail,
@@ -143,7 +158,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         return next;
       });
     },
-    [persist, session],
+    [persist],
   );
 
   const value = useMemo<WorkspaceState>(
