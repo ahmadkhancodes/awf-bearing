@@ -132,7 +132,7 @@ export function AnswerChart({ spec, height = 260 }: { spec: ChartSpec; height?: 
                   key={s.key}
                   dataKey={s.key}
                   name={s.name}
-                  stackId={spec.kind === "stacked" ? "a" : undefined}
+                  {...(spec.kind === "stacked" ? { stackId: "a" } : {})}
                   fill={s.color}
                   radius={spec.kind === "stacked" ? [0, 0, 0, 0] : [4, 4, 0, 0]}
                   maxBarSize={48}
