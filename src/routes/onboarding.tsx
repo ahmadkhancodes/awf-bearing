@@ -84,7 +84,6 @@ function Onboarding() {
     window.setTimeout(goToToday, 900);
   };
 
-
   return (
     <div className="min-h-dvh bg-background">
       <header className="border-b border-rule">
