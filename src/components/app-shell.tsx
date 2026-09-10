@@ -94,7 +94,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               type="button"
               onClick={() => {
                 signOut();
-                void navigate({ to: "/" });
+                void navigate({ to: "/", replace: true });
               }}
               className="label-mono min-h-11 border border-rule px-3 transition-colors hover:border-navy hover:bg-muted"
             >
@@ -167,7 +167,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               type="button"
               onClick={() => {
                 signOut();
-                void navigate({ to: "/" });
+                void navigate({ to: "/", replace: true });
               }}
               className="label-mono mt-2 min-h-11 w-full border border-rule px-3"
             >
