@@ -10,7 +10,15 @@ export function AwfMark({ className }: { className?: string }) {
       className={cn("h-6 w-6", className)}
       fill="none"
     >
-      <rect x="0.75" y="0.75" width="30.5" height="30.5" stroke="currentColor" strokeWidth="1.5" />
+      <rect
+        x="0.75"
+        y="0.75"
+        width="30.5"
+        height="30.5"
+        rx="4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
       <path d="M7 23 L12.5 9 L18 23" stroke="currentColor" strokeWidth="1.5" />
       <path d="M9.6 18.5 H15.4" stroke="currentColor" strokeWidth="1.5" />
       <path d="M21 9 V23 H25.5" stroke="currentColor" strokeWidth="1.5" />
@@ -21,9 +29,11 @@ export function AwfMark({ className }: { className?: string }) {
 export function ProductLogo({
   className,
   tone = "navy",
+  subtitle = true,
 }: {
   className?: string;
   tone?: "navy" | "light";
+  subtitle?: boolean;
 }) {
   return (
     <span
@@ -34,9 +44,11 @@ export function ProductLogo({
       )}
     >
       <AwfMark />
-      <span className="flex items-baseline gap-2">
-        <span className="font-display text-[17px] font-semibold tracking-tight">Bearing</span>
-        <span className="label-mono text-muted-foreground hidden sm:inline">AWF</span>
+      <span className="flex flex-col leading-tight">
+        <span className="text-[15px] font-semibold tracking-tight">Bearing</span>
+        {subtitle ? (
+          <span className="text-[11px] font-medium text-muted-foreground">by AWF Consulting</span>
+        ) : null}
       </span>
     </span>
   );
