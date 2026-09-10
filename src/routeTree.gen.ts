@@ -19,6 +19,7 @@ import { Route as AppDecisionsRouteImport } from './routes/app.decisions'
 import { Route as AppRisksRouteImport } from './routes/app.risks'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppTodayRouteImport } from './routes/app.today'
+import { Route as AppTrustRouteImport } from './routes/app.trust'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -70,6 +71,11 @@ const AppTodayRoute = AppTodayRouteImport.update({
   path: '/today',
   getParentRoute: () => AppRoute,
 } as any)
+const AppTrustRoute = AppTrustRouteImport.update({
+  id: '/trust',
+  path: '/trust',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/app/risks': typeof AppRisksRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/today': typeof AppTodayRoute
+  '/app/trust': typeof AppTrustRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
@@ -92,6 +99,7 @@ export interface FileRoutesByTo {
   '/app/risks': typeof AppRisksRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/today': typeof AppTodayRoute
+  '/app/trust': typeof AppTrustRoute
   '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/app/risks': typeof AppRisksRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/today': typeof AppTodayRoute
+  '/app/trust': typeof AppTrustRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/app/risks'
     | '/app/settings'
     | '/app/today'
+    | '/app/trust'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/app/risks'
     | '/app/settings'
     | '/app/today'
+    | '/app/trust'
     | '/app'
   id:
     | '__root__'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/app/risks'
     | '/app/settings'
     | '/app/today'
+    | '/app/trust'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
@@ -223,6 +235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTodayRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/trust': {
+      id: '/app/trust'
+      path: '/trust'
+      fullPath: '/app/trust'
+      preLoaderRoute: typeof AppTrustRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -233,6 +252,7 @@ interface AppRouteChildren {
   AppRisksRoute: typeof AppRisksRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppTodayRoute: typeof AppTodayRoute
+  AppTrustRoute: typeof AppTrustRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -243,6 +263,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppRisksRoute: AppRisksRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppTodayRoute: AppTodayRoute,
+  AppTrustRoute: AppTrustRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
