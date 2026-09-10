@@ -6,7 +6,7 @@ export function AwfMark({ className }: { className?: string }) {
     <svg
       viewBox="0 0 32 32"
       role="img"
-      aria-label="AWF Consultants mark"
+      aria-label="AWF Consulting mark"
       className={cn("h-6 w-6", className)}
       fill="none"
     >

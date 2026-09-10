@@ -80,13 +80,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Bearing by AWF Consultants" },
+      { title: "Bearing by AWF Consulting" },
       {
         name: "description",
         content:
           "Bearing is an executive operations platform: what changed, what matters, what needs a decision.",
       },
-      { property: "og:site_name", content: "Bearing by AWF Consultants" },
+      { property: "og:site_name", content: "Bearing by AWF Consulting" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

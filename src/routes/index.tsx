@@ -5,13 +5,13 @@ import { MonoLabel, Panel, StatePill } from "@/components/ui-kit";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Bearing by AWF Consultants — executive operations intelligence" },
+      { title: "Bearing by AWF Consulting — executive operations intelligence" },
       {
         name: "description",
         content:
           "Bearing compresses the operational review into a one-minute executive briefing: what changed, what it costs, what needs your decision, and who owns the next step.",
       },
-      { property: "og:title", content: "Bearing by AWF Consultants" },
+      { property: "og:title", content: "Bearing by AWF Consulting" },
       {
         property: "og:description",
         content:
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/")({
           name: "Bearing",
           applicationCategory: "BusinessApplication",
           operatingSystem: "Web",
-          publisher: { "@type": "Organization", name: "AWF Consultants" },
+          publisher: { "@type": "Organization", name: "AWF Consulting" },
           description:
             "Executive operations platform that turns fragmented operational data into material changes, ranked risks, decisions and assigned follow-through.",
         }),

@@ -8,12 +8,12 @@ import { ORG } from "@/lib/demo-data";
 export const Route = createFileRoute("/signin")({
   head: () => ({
     meta: [
-      { title: "Sign in — Bearing by AWF Consultants" },
+      { title: "Sign in — Bearing by AWF Consulting" },
       {
         name: "description",
-        content: "Sign in to Bearing, the executive operations platform from AWF Consultants.",
+        content: "Sign in to Bearing, the executive operations platform from AWF Consulting.",
       },
-      { property: "og:title", content: "Sign in — Bearing by AWF Consultants" },
+      { property: "og:title", content: "Sign in — Bearing by AWF Consulting" },
       { property: "og:description", content: "Access your Bearing workspace." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

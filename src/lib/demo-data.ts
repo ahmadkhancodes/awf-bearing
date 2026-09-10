@@ -1,5 +1,5 @@
 /**
- * Seeded sample organization for Bearing by AWF Consultants.
+ * Seeded sample organization for Bearing by AWF Consulting.
  * All figures below are fictional sample data for demonstration.
  */
 
